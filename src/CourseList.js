@@ -31,7 +31,6 @@ class CourseList extends React.Component {
     } else {
       order = false;
     }
-    console.log(order);
     this.fetchInfo(sortee, order);
   }
 
