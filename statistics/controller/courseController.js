@@ -26,13 +26,15 @@ exports.courseDetail = ((req, res) => {
 });
 
 exports.courseList = ((req, res) => {
-  let sortingInstructions = req.query.sort.split('_')
-  let dict = { asc: 1, desc: -1 };
   let sort = {};
-  if (sortingInstructions.length > 1) {
-    sort[sortingInstructions[0]] = dict[sortingInstructions[1]];
-  } else {
-    sort[sortingInstructions[0]] = -1;
+  if (req.query.sort) {
+    const sortingInstructions = req.query.sort.split('_');
+    const dict = { asc: 1, desc: -1 };
+    if (sortingInstructions.length > 1) {
+      sort[sortingInstructions[0]] = dict[sortingInstructions[1]];
+    } else {
+      sort[sortingInstructions[0]] = -1;
+    }
   }
   sort.total = -1;
   if (!('courseName' in sort)) {
