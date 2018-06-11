@@ -1,0 +1,40 @@
+{
+  "name": "jan",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "bulma": "^0.7.1",
+    "express": "^4.16.3",
+    "express-redis-cache": "^1.1.1",
+    "mongodb": "^3.0.10",
+    "mongoose": "^5.1.4",
+    "node-xlsx": "^0.12.0",
+    "npm": "^6.1.0",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "1.1.4",
+    "rechart": "0.0.1",
+    "recharts": "^1.0.0-beta.10"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-google": "^0.9.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-react": "^7.9.1",
+    "eslint-plugin-standard": "^3.1.0",
+    "nodemon": "^1.17.5"
+  },
+  "proxy": "http://localhost:3001"
+}
