@@ -40,7 +40,21 @@ exports.courseList = ((req, res) => {
   if (!('courseName' in sort)) {
     sort.courseName = -1;
   }
+  let together = {}
+  let findee = {};
+  if (req.query.search) {
+    findee.$regex = req.query.search;
+    findee.$options = 'i';
+    let matchee1 = {};
+    let matchee2 = {};
+    let matchee3 = {};
+    matchee1.courseName = findee;
+    matchee2.courseCode = findee;
+    matchee3.programShort = findee;
+    together.$or = [matchee1, matchee2, matchee3];
+  }
   Course.aggregate([
+    { $match: together },
     { $project: { _id: 0, courseName: 1, courseCode: 1, totalPass: 1, totalFail: 1, programShort: 1, programLong: 1, passRate: 1, averageGrade: 1, total: 1 } },
     { $sort: sort },
   ], (err, result) => {

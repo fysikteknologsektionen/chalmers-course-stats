@@ -11,17 +11,19 @@ class CourseList extends React.Component {
       showInfo: false,
       sort: 'courseName',
       desc: false,
+      match: '',
     };
+    this.timeout = 0;
   }
 
-  fetchInfo(sortee, order) {
-    fetch('/courses?sort=' + sortee + '_' + dict[order])
+  fetchInfo(sortee, order, matchee) {
+    fetch('/courses?sort=' + sortee + '_' + dict[order] + '&search=' + matchee)
       .then(res => res.json())
-      .then(data => this.setState({ data: data, sort: sortee, order: order }));
+      .then(data => this.setState({ data: data, sort: sortee, order: order, match: matchee }));
   }
 
   componentDidMount() {
-    this.fetchInfo('courseName', false);
+    this.fetchInfo('courseName', false, '');
   }
 
   sorter(sortee) {
@@ -29,9 +31,27 @@ class CourseList extends React.Component {
     if (sortee === this.state.sort) {
       order = !this.state.order;
     } else {
-      order = false;
+      if (sortee === 'courseName' || sortee === 'courseCode') {
+        order = true;
+      } else {
+        order = false;
+      }
     }
-    this.fetchInfo(sortee, order);
+    this.fetchInfo(sortee, order, this.state.match);
+  }
+
+
+  renderInput() {
+    const handleChange = (event) => {
+      if (this.timeout) {
+        clearTimeout(this.timeout);
+      }
+      const query = event.target.value;
+      this.timeout = setTimeout(() => {
+        this.fetchInfo(this.state.sort, this.state.desc, query);
+      }, 500);
+    };
+    return (<input className="input" type="text" placeholder="Search" onChange={handleChange} />);
   }
 
   render() {
@@ -48,7 +68,8 @@ class CourseList extends React.Component {
         <span className="title is-5 icon has-text-info">
           <i onClick={() => this.setState({ showInfo: true })} className="fas fa-info-circle"></i>
         </span>
-        <table className="table is-hoverable is-striped">
+        { this.renderInput() }
+        <table className="table is-hoverable is-striped is-fullwidth">
           <thead>
             <tr>
               <th onClick={() => this.sorter('courseCode')}>Code</th>
@@ -63,7 +84,7 @@ class CourseList extends React.Component {
           <tbody>
             { this.state.data && this.state.data.map((e) => (
               <tr key={e.courseCode}>
-                <th><Link to={'/statistics/' + e.courseCode}>{e.courseCode}</Link></th>
+                <th><Link to={'/statistics/' + e.courseCode} >{e.courseCode}</Link></th>
                 <td>{e.courseName}</td>
                 <td><abbr title={e.programLong}>{e.programShort}</abbr></td>
                 <td>{Math.round(e.passRate * 1000) / 10}</td>

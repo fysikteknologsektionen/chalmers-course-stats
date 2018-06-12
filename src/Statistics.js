@@ -16,7 +16,6 @@ class Statistics extends React.Component {
       data: null,
       info: null,
     };
-    this.handleChange = this.handleChange.bind(this);
   }
 
   fetchInfo(value) {
@@ -32,17 +31,16 @@ class Statistics extends React.Component {
     this.fetchInfo(this.props.match.params.initial);
   }
 
-  handleChange(event) {
-    const val = event.target.value;
-    const regex = '^[a-zA-Z]{3}\\d{3}$';
-    const match = val.match(regex);
-    if (match) {
-      this.fetchInfo(match[0]);
-    }
-  }
-
-  renderInput(f) {
-    return (<input className="input" type="text" placeholder="Course code" onChange={f} />);
+  renderInput() {
+    const handleChange = (event) => {
+      const val = event.target.value;
+      const regex = '^[a-zA-Z]{3}\\d{3}$';
+      const match = val.match(regex);
+      if (match) {
+        this.fetchInfo(match[0]);
+      }
+    };
+    return (<input className="input" type="text" placeholder="Course code" onChange={handleChange} />);
   }
 
   render() {
