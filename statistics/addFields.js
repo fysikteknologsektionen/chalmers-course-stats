@@ -62,6 +62,12 @@ db.once('open', () => {
     Result.collection.insertMany(results, (err, r) => {
       Course.aggregate([
         { $addFields: { totalFail: { $sum: '$results.U' },
+          U: { $sum: '$results.U' },
+          G: { $sum: '$results.G' },
+          TG: { $sum: '$results.TG' },
+          3: { $sum: '$results.3' },
+          4: { $sum: '$results.4' },
+          5: { $sum: '$results.5' },
           totalPass: { $cond: [{ $eq: [
             { $add: [{ $sum: '$results.3' }, { $sum: '$results.4' }, { $sum: '$results.5' }] }, 0] }, { $add: [{ $sum: '$results.G' }, { $sum: 'results.TG' }]}, { $add: [{ $sum: '$results.3' }, { $sum: '$results.4' }, { $sum: '$results.5' }, { $sum: '$results.TG' }] }]
           },
