@@ -7,7 +7,8 @@ const defaults = {
   programLong: '-',
   passRate: '0',
   total: '0',
-}
+};
+
 class Statistics extends React.Component {
   constructor(props) {
     super(props);
@@ -18,6 +19,10 @@ class Statistics extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.fetchInfo(this.props.match.params.initial);
+  }
+
   fetchInfo(value) {
     Promise.all([
       fetch('/results/' + value).then(r => r.json()),
@@ -25,10 +30,6 @@ class Statistics extends React.Component {
     ]).then(([r1, r2]) => {
       this.setState({ data: r1, info: r2 });
     });
-  }
-
-  componentDidMount() {
-    this.fetchInfo(this.props.match.params.initial);
   }
 
   renderInput() {
@@ -64,13 +65,13 @@ class Statistics extends React.Component {
           <div className="level-item has-text-centered">
             <div>
               <p className="heading">Program name</p>
-              <p className="title"><abbr title={ infoRender.programLong }>{ infoRender.programShort }</abbr></p>
+              <p className="title"><abbr title={infoRender.programLong}>{ infoRender.programShort }</abbr></p>
             </div>
           </div>
           <div className="level-item has-text-centered">
             <div>
               <p className="heading">Pass rate</p>
-              <p className="title">{ Math.round(infoRender.passRate*1000)/10 }%</p>
+              <p className="title">{ Math.round(infoRender.passRate * 1000)/10 }%</p>
             </div>
           </div>
           <div className="level-item has-text-centered">
@@ -85,7 +86,7 @@ class Statistics extends React.Component {
     const radio = (
       <div className="control">
         <label className="radio">
-          <input type="radio" name="setting" onClick={() => this.setState({ expand: 'none' })} defaultChecked={true} />
+          <input type="radio" name="setting" onClick={() => this.setState({ expand: 'none' })} defaultChecked />
           Standard
         </label>
         <label className="radio">
@@ -98,39 +99,38 @@ class Statistics extends React.Component {
         </label>
       </div>
     );
+
+    const grades = ['U', '3', 'G', 'TG', '4', '5'];
+    const colors = {'U': '#e6550d', '3': '#a1d99b', 'G': '#a1d99b', 'TG': '#a1d99b', '4': '#74c476', '5': '#31a354'};
     return (
       <div className="container">
         { InfoBar }
         { this.renderInput(this.handleChange) }
         { radio }
         { this.state.data &&
-            <ResponsiveContainer width="90%" height={Math.max(Object.keys(this.state.data).length * 30, 300)}>
-              <BarChart
-                data={this.state.data}
-                layout="vertical"
-                margin={{ top: 20, right: 0, left: 40, bottom: 5 }}
-                stackOffset={this.state.expand}
-                label="type"
-              >
-                <XAxis type="number" orientation="top" />
-                <YAxis type="category" tickLine={false} dataKey="date" />
-                <Tooltip />
-                <Legend />
-                <Bar barSize={10} dataKey="U" stackId="a" fill="#e6550d" />
-                <Bar barSize={10} dataKey="3" stackId="a" fill="#a1d99b" />
-                <Bar barSize={10} dataKey="G" stackId="a" fill="#a1d99b" />
-                <Bar barSize={10} dataKey="TG" stackId="a" fill="#a1d99b" />
-                <Bar barSize={10} dataKey="4" stackId="a" fill="#74c476" />
-                <Bar barSize={10} dataKey="5" stackId="a" fill="#31a354" />
-                { this.state.expand === 'silhouette' &&
-                    <ReferenceLine x="0" stroke="black" isFront label="Median"/>
-                }
-              </BarChart>
-            </ResponsiveContainer>}
-          </div>
+          <ResponsiveContainer width="90%" height={Math.max(Object.keys(this.state.data).length * 30, 300)}>
+            <BarChart
+              data={this.state.data}
+              layout="vertical"
+              margin={{ top: 20, right: 0, left: 40, bottom: 5 }}
+              stackOffset={this.state.expand}
+              label="type"
+            >
+              <XAxis type="number" orientation="top" />
+              <YAxis type="category" tickLine={false} dataKey="date" />
+              <Tooltip />
+              <Legend />
+              { grades.map(grade =>
+                this.state.info[grade] > 0 &&
+              <Bar barSize={10} dataKey={grade} stackId="a" fill={colors[grade]} /> )}
+              { this.state.expand === 'silhouette' &&
+                  <ReferenceLine x="0" stroke="black" isFront label="Median"/>
+              }
+            </BarChart>
+          </ResponsiveContainer>}
+        </div>
     );
   }
 }
-// <Bar barSize={10} dataKey="VG" stackId="a" fill="#31a354" />
 
 export default Statistics;
