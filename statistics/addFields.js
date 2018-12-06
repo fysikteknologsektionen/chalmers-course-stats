@@ -9,18 +9,25 @@ const courseProperties = [
   'programShort',
   'programLong',
 ];
-const filename = 'Statistik_over_kursresultat.xlsx';
+const filename = 'results.xlsx';
 mongoose.connect('mongodb://localhost/test');
 const db = mongoose.connection;
 let courses = {};
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
+  console.log('Reading file..');
   const worksheet = xlsx.parse(`${__dirname}/${filename}`);
   worksheet.slice(1).forEach((ws) => {
+    console.log(ws.name);
     const data = ws.data.slice(1);
     data.forEach((r) => {
       let courseCode, courseName, programShort, programLong, resultId, type, points, date, grade, count, fraction;
       [courseCode, courseName, programShort, programLong, resultId, type, points, date, grade, count, fraction] = r;
+      if (date.toString().length === 5) { // Excel short date format
+        date = (new Date((date - (25567 + 2)) * 24 * 60 * 60 * 1000)).toISOString().substr(0,10);
+      } else {
+        date = new Date(date+' 12:00').toISOString().substr(0,10);
+      }
       if (!(courseCode in courses)) {
         let course = new Course();
         courseProperties.forEach((p, i) => {

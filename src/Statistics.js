@@ -104,8 +104,8 @@ class Statistics extends React.Component {
     const colors = {'U': '#e6550d', '3': '#a1d99b', 'G': '#a1d99b', 'TG': '#a1d99b', '4': '#74c476', '5': '#31a354'};
     return (
       <div className="container">
-        { InfoBar }
         { this.renderInput(this.handleChange) }
+        { InfoBar }
         { radio }
         { this.state.data &&
           <ResponsiveContainer width="90%" height={Math.max(Object.keys(this.state.data).length * 30, 300)}>
