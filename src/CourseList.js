@@ -17,7 +17,7 @@ class CourseList extends React.Component {
   }
 
   fetchInfo(sortee, order, matchee) {
-    fetch('/courses?sort=' + sortee + '_' + dict[order] + '&search=' + matchee)
+    fetch(process.env.PUBLIC_URL+'/courses?sort=' + sortee + '_' + dict[order] + '&search=' + matchee)
       .then(res => res.json())
       .then(data => this.setState({ data: data, sort: sortee, order: order, match: matchee }));
   }
