@@ -11,9 +11,9 @@ class App extends React.Component {
     return (
       <BrowserRouter>
         <Switch>
-          <Route exact path="/" component={CourseList} />
-          <Route exact path="/" component={Statistics} />
-          <Route path="/:initial/" component={Statistics} />
+          <Route exact path="/stats/" component={CourseList} />
+          <Route exact path="/stats/" component={Statistics} />
+          <Route path="/stats/:initial/" component={Statistics} />
         </Switch>
       </BrowserRouter>
     );

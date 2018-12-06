@@ -8,7 +8,6 @@ then
 else
 	oldSize=0
 fi
-oldSize=$(stat -c%s results.xlsx)
 if [[ "$newSize" -gt "$oldSize" ]]; then
     mv -f temp.xlsx results.xlsx
     mongo --eval "db.results.drop();"
