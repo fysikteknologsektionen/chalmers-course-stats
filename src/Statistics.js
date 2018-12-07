@@ -107,7 +107,7 @@ class Statistics extends React.Component {
         { this.renderInput(this.handleChange) }
         { InfoBar }
         { radio }
-        { this.state.data &&
+        { this.state.info && this.state.data &&
           <ResponsiveContainer width="90%" height={Math.max(Object.keys(this.state.data).length * 30, 300)}>
             <BarChart
               data={this.state.data}
