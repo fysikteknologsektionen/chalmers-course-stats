@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+mongoose.set('useCreateIndex', true);
+mongoose.set('useNewUrlParser', true);
 require('./statistics/models/Result');
 require('./statistics/models/Course');
 const router = require('./statistics/routes/routes');
