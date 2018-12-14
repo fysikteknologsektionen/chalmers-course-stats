@@ -122,7 +122,7 @@ class Statistics extends React.Component {
               <Legend />
               { grades.map(grade =>
                 this.state.info[grade] > 0 &&
-              <Bar barSize={10} dataKey={grade} stackId="a" fill={colors[grade]} /> )}
+              <Bar key={grade} barSize={10} dataKey={grade} stackId="a" fill={colors[grade]} /> )}
               { this.state.expand === 'silhouette' &&
                   <ReferenceLine x="0" stroke="black" isFront label="Median"/>
               }
