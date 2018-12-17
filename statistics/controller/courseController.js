@@ -27,6 +27,15 @@ exports.courseDetail = ((req, res) => {
 
 exports.courseList = ((req, res) => {
   let sort = {};
+  let items = 20;
+  let page = 0;
+  if (req.query.page) {
+    page = parseInt(req.query.page);
+  }
+  console.log(page);
+  if (req.query.items) {
+    items = parseInt(req.query.items);
+  }
   if (req.query.sort) {
     const sortingInstructions = req.query.sort.split('_');
     const dict = { asc: 1, desc: -1 };
@@ -55,39 +64,16 @@ exports.courseList = ((req, res) => {
   }
   Course.aggregate([
     { $match: together },
-    { $project: { _id: 0, courseName: 1, courseCode: 1, totalPass: 1, totalFail: 1, programShort: 1, programLong: 1, passRate: 1, averageGrade: 1, total: 1 } },
-    { $sort: sort },
+    { $facet: {
+      'courses': [ 
+        { $project: { _id: 0, courseName: 1, courseCode: 1, totalPass: 1, totalFail: 1, programShort: 1, programLong: 1, passRate: 1, averageGrade: 1, total: 1 } },
+        { $sort: sort },
+        { $skip: page*items },
+        { $limit: items }],
+      'metadata': [ {$group:  {_id: null, count: { $sum: 1 } } }, {$project: {_id: 0} } ],
+    } },
   ], (err, result) => {
-    res.json(result);
+    console.log(result[0]);
+    res.json(result[0]);
   });
 });
-
-// exports.courseListByPassRate = ((req, res) => {
-//   Course.aggregate([
-//     { $match: { totalPass: { $gt: 0 } } },
-//     { $project: { _id: 0, courseName: 1, courseCode: 1, totalPass: 1, totalFail: 1, programShort: 1, programLong: 1, passRate: 1 } },
-//     { $sort: { programShort: 1, passRate: -1, totalPass: -1 } },
-//   ], (err, result) => {
-//     if (err) {
-//       console.log(result);
-//       res.json(err);
-//     } else {
-//       res.json(result);
-//     }
-//   });
-// });
-
-// exports.courseListByTotalResults = ((req, res) => {
-//   Course.aggregate([
-//     { $project: { _id: 0, courseName: 1, courseCode: 1, totalPass: 1, totalFail: 1, programShort: 1, programLong: 1 } } ,
-//     { $addFields: { total: { $add: ['$totalPass', '$totalFail'] } } },
-//     { $sort: { total: -1 } },
-//   ], (err, result) => {
-//     if (err) {
-//       console.log(result);
-//       res.json(err);
-//     } else {
-//       res.json(result);
-//     }
-//   });
-// });

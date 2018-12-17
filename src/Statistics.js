@@ -100,8 +100,8 @@ class Statistics extends React.Component {
       </div>
     );
 
-    const grades = ['U', '3', 'G', 'TG', '4', '5'];
-    const colors = {'U': '#e6550d', '3': '#a1d99b', 'G': '#a1d99b', 'TG': '#a1d99b', '4': '#74c476', '5': '#31a354'};
+    const grades = ['U', '3', 'G', 'TG', '4', 'VG', '5'];
+    const colors = {'U': '#e6550d', '3': '#a1d99b', 'G': '#a1d99b', 'TG': '#a1d99b', '4': '#74c476', '5': '#31a354', 'VG' : '#31a354'};
     return (
       <div className="container">
         { this.renderInput(this.handleChange) }

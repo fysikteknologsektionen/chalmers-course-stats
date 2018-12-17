@@ -74,6 +74,7 @@ db.once('open', () => {
           TG: { $sum: '$results.TG' },
           3: { $sum: '$results.3' },
           4: { $sum: '$results.4' },
+          VG: { $sum: '$results.VG' },
           5: { $sum: '$results.5' },
           totalPass: { $cond: [{ $eq: [
             { $add: [{ $sum: '$results.3' }, { $sum: '$results.4' }, { $sum: '$results.5' }] }, 0] }, { $add: [{ $sum: '$results.G' }, { $sum: 'results.TG' }]}, { $add: [{ $sum: '$results.3' }, { $sum: '$results.4' }, { $sum: '$results.5' }, { $sum: '$results.TG' }] }]
