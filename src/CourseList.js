@@ -32,7 +32,7 @@ class CourseList extends React.Component {
   sorter(sortee) {
     let order;
     if (sortee === this.state.sort) {
-      order = !this.state.order;
+      order = !this.state.desc;
     } else {
       if (sortee === 'courseName' || sortee === 'courseCode' || sortee === 'programShort') {
         order = false;
