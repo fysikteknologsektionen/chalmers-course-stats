@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 
+const items_per_page = 20;
 const dict = { true: 'desc', false: 'asc' };
 class CourseList extends React.Component {
   constructor(props) {
@@ -9,21 +10,23 @@ class CourseList extends React.Component {
     this.state = {
       data: null,
       showInfo: false,
+      page: 0,
       sort: 'courseName',
       desc: false,
       match: '',
+      count: 0,
     };
     this.timeout = 0;
   }
 
-  fetchInfo(sortee, order, matchee) {
-    fetch(process.env.PUBLIC_URL+'/courses?sort=' + sortee + '_' + dict[order] + '&search=' + matchee)
+  fetchInfo(sortee, order, matchee, page) {
+    fetch(process.env.PUBLIC_URL+'/courses?sort=' + sortee + '_' + dict[order] + '&search=' + matchee + '&page=' + page + '&items=' + items_per_page)
       .then(res => res.json())
-      .then(data => this.setState({ data: data, sort: sortee, order: order, match: matchee }));
+      .then(data => data.courses.length && data.metadata.length && this.setState({ data: data.courses, sort: sortee, order: order, match: matchee, page: page, count: data.metadata[0].count }));
   }
 
   componentDidMount() {
-    this.fetchInfo('courseName', false, '');
+    this.fetchInfo('courseName', false, '', 0);
   }
 
   sorter(sortee) {
@@ -31,13 +34,44 @@ class CourseList extends React.Component {
     if (sortee === this.state.sort) {
       order = !this.state.order;
     } else {
-      if (sortee === 'courseName' || sortee === 'courseCode') {
-        order = true;
-      } else {
+      if (sortee === 'courseName' || sortee === 'courseCode' || sortee === 'programShort') {
         order = false;
+      } else {
+        order = true;
       }
     }
-    this.fetchInfo(sortee, order, this.state.match);
+    this.fetchInfo(sortee, order, this.state.match, this.state.page);
+  }
+
+  changePage(page) {
+    this.fetchInfo(this.state.sort, this.state.desc, this.state.match, page);
+  }
+
+  navigation() {
+    let pages = this.state.count/items_per_page;
+    let rest = this.state.count%items_per_page;
+    if (rest > 0) {
+      pages += 1;
+    }
+    let prev = this.state.page;
+    let current = this.state.page + 1;
+    let next = this.state.page + 2;
+    return (
+      <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+        <ul class="pagination-list">
+          { prev > 0 &&
+              <li>
+                <a onClick={ () => this.changePage(prev-1) } class="pagination-link" aria-label="Page { prev }" aria-current="page">{ prev }</a>
+              </li> }
+              <li>
+                <a class="pagination-link is-current" aria-label="Page { current }" aria-current="page">{ current }</a>
+              </li>
+              { next <= pages &&
+                  <li>
+                    <a onClick={ () => this.changePage(next-1) } class="pagination-link" aria-label="Page { this.state.page + 2 }" aria-current="page">{ next }</a>
+                  </li> }
+                </ul>
+              </nav>);
   }
 
 
@@ -48,7 +82,7 @@ class CourseList extends React.Component {
       }
       const query = event.target.value;
       this.timeout = setTimeout(() => {
-        this.fetchInfo(this.state.sort, this.state.desc, query);
+        this.fetchInfo(this.state.sort, this.state.desc, query, 0);
       }, 500);
     };
     return (<input className="input" type="text" placeholder="Search" onChange={handleChange} />);
@@ -95,6 +129,7 @@ class CourseList extends React.Component {
             ))}
           </tbody>
         </table>
+        { this.navigation() }
       </div>);
   }
 }
