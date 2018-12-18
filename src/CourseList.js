@@ -11,7 +11,7 @@ class CourseList extends React.Component {
       data: null,
       showInfo: false,
       page: 0,
-      sort: 'courseCode',
+      sort: 'courseName',
       desc: false,
       match: '',
       count: 0,
@@ -26,7 +26,7 @@ class CourseList extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchInfo('courseCode', false, '', 0);
+    this.fetchInfo('courseName', false, '', 0);
   }
 
   sorter(sortee) {
@@ -103,34 +103,32 @@ class CourseList extends React.Component {
           <i onClick={() => this.setState({ showInfo: true })} className="fas fa-info-circle"></i>
         </span>
         { this.renderInput() }
-        <div className="tableContainer">
-          <table className="table is-hoverable is-striped is-fullwidth">
-            <thead>
-              <tr>
-                <th onClick={() => this.sorter('courseCode')}>Code</th>
-                <th onClick={() => this.sorter('courseName')}>Course</th>
-                <th onClick={() => this.sorter('programShort')}>Program</th>
-                <th onClick={() => this.sorter('passRate')}><abbr title="Pass rate">PR</abbr></th>
-                <th onClick={() => this.sorter('totalPass')}><abbr title="Number of passed results">P</abbr></th>
-                <th onClick={() => this.sorter('totalFail')}><abbr title="Numer of failed results">F</abbr></th>
-                <th onClick={() => this.sorter('averageGrade')}><abbr title="Average grade (3-5)">AG</abbr></th>
+        <table className="table is-hoverable is-striped is-fullwidth">
+          <thead>
+            <tr>
+              <th onClick={() => this.sorter('courseCode')}>Code</th>
+              <th onClick={() => this.sorter('courseName')}>Course</th>
+              <th onClick={() => this.sorter('programShort')}>Program</th>
+              <th onClick={() => this.sorter('passRate')}><abbr title="Pass rate">PR</abbr></th>
+              <th onClick={() => this.sorter('totalPass')}><abbr title="Number of passed results">P</abbr></th>
+              <th onClick={() => this.sorter('totalFail')}><abbr title="Numer of failed results">F</abbr></th>
+              <th onClick={() => this.sorter('averageGrade')}><abbr title="Average grade (3-5)">AG</abbr></th>
+            </tr>
+          </thead>
+          <tbody>
+            { this.state.data && this.state.data.map((e) => (
+              <tr key={e.courseCode}>
+                <th><Link to={'/stats/' + e.courseCode} >{e.courseCode}</Link></th>
+                <td>{e.courseName}</td>
+                <td><abbr title={e.programLong}>{e.programShort}</abbr></td>
+                <td>{Math.round(e.passRate * 1000) / 10}</td>
+                <td>{e.totalPass}</td>
+                <td>{e.totalFail}</td>
+                <td>{Math.round(e.averageGrade * 10) / 10}</td>
               </tr>
-            </thead>
-            <tbody>
-              { this.state.data && this.state.data.map((e) => (
-                <tr key={e.courseCode}>
-                  <th><Link to={'/stats/' + e.courseCode} >{e.courseCode}</Link></th>
-                  <td>{e.courseName}</td>
-                  <td><abbr title={e.programLong}>{e.programShort}</abbr></td>
-                  <td>{Math.round(e.passRate * 1000) / 10}</td>
-                  <td>{e.totalPass}</td>
-                  <td>{e.totalFail}</td>
-                  <td>{Math.round(e.averageGrade * 10) / 10}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
         { this.navigation() }
       </div>);
   }

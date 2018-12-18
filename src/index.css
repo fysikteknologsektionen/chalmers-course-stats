@@ -12,8 +12,3 @@ th {
 th:hover {
   cursor: pointer !important;
 }
-
-.tableContainer {
-  width: 100%;
-  overflow-x: auto;
-}
