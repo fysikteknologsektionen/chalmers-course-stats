@@ -1,4 +1,4 @@
-import { ResponsiveContainer, ReferenceLine, BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+import { ResponsiveContainer, ReferenceLine, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, LabelList } from 'recharts';
 import React from 'react';
 
 const defaults = {
@@ -21,6 +21,11 @@ class Statistics extends React.Component {
 
   componentDidMount() {
     this.fetchInfo(this.props.match.params.initial);
+  }
+
+  percentScore(value,payload) {
+    let scores = [payload['U'],payload['G'],payload['TG'], payload[3], payload[4], payload[5]];
+    return Math.round(100*(value/(scores.reduce((a, b) => a + b, 0))))+'%';
   }
 
   fetchInfo(value) {
@@ -100,31 +105,37 @@ class Statistics extends React.Component {
       </div>
     );
 
-    const grades = ['U', '3', 'G', 'TG', '4', 'VG', '5'];
-    const colors = {'U': '#e6550d', '3': '#a1d99b', 'G': '#a1d99b', 'TG': '#a1d99b', '4': '#74c476', '5': '#31a354', 'VG' : '#31a354'};
+    const grades = ['U', '3', 'G', 'TG', '4', '5'];
+    const colors = {'U': 'hsl(20, 90%, 40%)', '3': 'hsl(100, 60%, 80%)', 'G': 'hsl(100, 60%, 80%)', 'TG': 'hsl(100, 60%, 80%)', '4': 'hsl(100, 60%, 60%)', '5': 'hsl(100, 60%, 40%)'};    
     return (
       <div className="container">
         { this.renderInput(this.handleChange) }
         { InfoBar }
         { radio }
         { this.state.info && this.state.data &&
-          <ResponsiveContainer width="90%" height={Math.max(Object.keys(this.state.data).length * 30, 300)}>
+          <ResponsiveContainer width="100%" height={Math.max(Object.keys(this.state.data).length * 40, 300)}>
             <BarChart
               data={this.state.data}
               layout="vertical"
-              margin={{ top: 20, right: 0, left: 40, bottom: 5 }}
+              margin={{ top: 20, right: 40, left: 40, bottom: 5 }}
               stackOffset={this.state.expand}
               label="type"
             >
               <XAxis type="number" orientation="top" />
               <YAxis type="category" tickLine={false} dataKey="date" />
-              <Tooltip />
+              <Tooltip itemSorter={()=>1} formatter={(value,name,props) => (this.state.expand==='expand'? this.percentScore(value, props.payload) : value) } />
               <Legend />
               { grades.map(grade =>
                 this.state.info[grade] > 0 &&
-              <Bar key={grade} barSize={10} dataKey={grade} stackId="a" fill={colors[grade]} /> )}
+              <Bar barSize={20} dataKey={grade} stackId="a" fill={colors[grade]}>
+                <LabelList
+                fontSize={10}
+                valueAccessor={x => (x.width>20 ? (this.state.expand==='expand' ? this.percentScore(x[grade], x.payload) : x[grade]) : null)}
+                position="center" />
+              </Bar>
+              )}
               { this.state.expand === 'silhouette' &&
-                  <ReferenceLine x="0" stroke="black" isFront label="Median"/>
+                  <ReferenceLine x="0" stroke="black" isFront strokeDasharray="3 3" />
               }
             </BarChart>
           </ResponsiveContainer>}
