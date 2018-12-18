@@ -11,7 +11,7 @@ class CourseList extends React.Component {
       data: null,
       showInfo: false,
       page: 0,
-      sort: 'courseName',
+      sort: 'courseCode',
       desc: false,
       match: '',
       count: 0,
@@ -26,7 +26,7 @@ class CourseList extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchInfo('courseName', false, '', 0);
+    this.fetchInfo('courseCode', false, '', 0);
   }
 
   sorter(sortee) {
