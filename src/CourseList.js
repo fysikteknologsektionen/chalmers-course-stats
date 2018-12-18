@@ -61,14 +61,14 @@ class CourseList extends React.Component {
       <nav className="pagination is-centered" role="navigation" aria-label="pagination">
         <ul className="pagination-list">
           { prev > first &&
-              <>
               <li>
                 <a onClick={ () => this.changePage(first-1) } className="pagination-link" aria-label="Page { first }" aria-current="page">{ first }</a>
-              </li> 
+              </li> }
+          { prev - 1 > first &&
               <li>
                 <span class="pagination-ellipsis">&hellip;</span>
               </li> 
-              </> }
+          }
           { prev > 0 &&
               <li>
                 <a onClick={ () => this.changePage(prev-1) } className="pagination-link" aria-label="Page { prev }" aria-current="page">{ prev }</a>
@@ -80,15 +80,15 @@ class CourseList extends React.Component {
               <li>
                 <a onClick={ () => this.changePage(next-1) } className="pagination-link" aria-label="Page { this.state.page + 2 }" aria-current="page">{ next }</a>
               </li> }
-          { next < pages &&
-              <>
+          { next < pages-1 &&
               <li>
                 <span class="pagination-ellipsis">&hellip;</span>
-              </li>
+              </li> }
+          { next < pages &&
               <li>
                 <a onClick={ () => this.changePage(pages-1) } className="pagination-link" aria-label="Page { pages }" aria-current="page">{ pages }</a>
               </li>
-              </> }
+           }
             </ul>
           </nav>);
   }
