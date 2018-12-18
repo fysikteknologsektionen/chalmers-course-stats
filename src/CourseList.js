@@ -66,7 +66,7 @@ class CourseList extends React.Component {
               </li> }
           { prev - 1 > first &&
               <li>
-                <span class="pagination-ellipsis">&hellip;</span>
+                <span className="pagination-ellipsis">&hellip;</span>
               </li> 
           }
           { prev > 0 &&
@@ -82,7 +82,7 @@ class CourseList extends React.Component {
               </li> }
           { next < pages-1 &&
               <li>
-                <span class="pagination-ellipsis">&hellip;</span>
+                <span className="pagination-ellipsis">&hellip;</span>
               </li> }
           { next < pages &&
               <li>
