@@ -57,18 +57,18 @@ class CourseList extends React.Component {
     let current = this.state.page + 1;
     let next = this.state.page + 2;
     return (
-      <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-        <ul class="pagination-list">
+      <nav className="pagination is-centered" role="navigation" aria-label="pagination">
+        <ul className="pagination-list">
           { prev > 0 &&
               <li>
-                <a onClick={ () => this.changePage(prev-1) } class="pagination-link" aria-label="Page { prev }" aria-current="page">{ prev }</a>
+                <a onClick={ () => this.changePage(prev-1) } className="pagination-link" aria-label="Page { prev }" aria-current="page">{ prev }</a>
               </li> }
               <li>
-                <a class="pagination-link is-current" aria-label="Page { current }" aria-current="page">{ current }</a>
+                <a className="pagination-link is-current" aria-label="Page { current }" aria-current="page">{ current }</a>
               </li>
               { next <= pages &&
                   <li>
-                    <a onClick={ () => this.changePage(next-1) } class="pagination-link" aria-label="Page { this.state.page + 2 }" aria-current="page">{ next }</a>
+                    <a onClick={ () => this.changePage(next-1) } className="pagination-link" aria-label="Page { this.state.page + 2 }" aria-current="page">{ next }</a>
                   </li> }
                 </ul>
               </nav>);

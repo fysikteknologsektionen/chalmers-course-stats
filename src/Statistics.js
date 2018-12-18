@@ -127,7 +127,7 @@ class Statistics extends React.Component {
               <Legend />
               { grades.map(grade =>
                 this.state.info[grade] > 0 &&
-              <Bar barSize={20} dataKey={grade} stackId="a" fill={colors[grade]}>
+              <Bar key={grade} barSize={20} dataKey={grade} stackId="a" fill={colors[grade]}>
                 <LabelList
                 fontSize={10}
                 valueAccessor={x => (x.width>20 ? (this.state.expand==='expand' ? this.percentScore(x[grade], x.payload) : x[grade]) : null)}
