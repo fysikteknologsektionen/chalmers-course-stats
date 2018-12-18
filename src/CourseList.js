@@ -42,7 +42,6 @@ class CourseList extends React.Component {
   componentDidMount() {
     this.fetchInfoUpdateState('courseCode', false, '', 0);
     window.onpopstate = () => {
-      console.log(this.props.history);
       this.setState(this.props.history.location.state);
     };
   }
