@@ -119,7 +119,7 @@ class CourseList extends React.Component {
             <tbody>
               { this.state.data && this.state.data.map((e) => (
                 <tr key={e.courseCode}>
-                  <th><Link to={'/stats/' + e.courseCode} >{e.courseCode}</Link></th>
+                  <th><Link to={`/stats/${e.courseCode}/`} >{e.courseCode}</Link></th>
                   <td>{e.courseName}</td>
                   <td><abbr title={e.programLong}>{e.programShort}</abbr></td>
                   <td>{Math.round(e.passRate * 1000) / 10}</td>
