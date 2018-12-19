@@ -19,20 +19,41 @@ class CourseList extends React.Component {
     this.timeout = 0;
   }
 
-  fetchInfo(sortee, order, matchee, page) {
-    fetch(process.env.PUBLIC_URL+'/courses?sort=' + sortee + '_' + dict[order] + '&search=' + matchee + '&page=' + page + '&items=' + items_per_page)
-      .then(res => res.json())
-      .then(data => data.courses.length && data.metadata.length && this.setState({ data: data.courses, sort: sortee, order: order, match: matchee, page: page, count: data.metadata[0].count }));
+  async fetchInfoUpdateState(sortee, order, matchee, page) {
+    const data = await this.fetchInfo(sortee, order, matchee, page);
+    if (data.courses.length && data.metadata.length) {
+      let tempState = this.state;
+      tempState.data = data.courses;
+      tempState.sort = sortee;
+      tempState.desc = order;
+      tempState.match = matchee;
+      tempState.page = page;
+      tempState.count = data.metadata[0].count;
+      this.props.history.push('/stats/', tempState);
+    }
+  }
+
+  async fetchInfo(sortee, order, matchee, page) {
+    const response = await fetch(`${process.env.PUBLIC_URL}/courses?sort=${sortee}_${dict[order]}&search=${matchee}&page=${page}&items=${items_per_page}`);
+    const json = await response.json();
+    return json;
   }
 
   componentDidMount() {
-    this.fetchInfo('courseCode', false, '', 0);
+    if (this.props.location.state) {
+      this.setState(this.props.location.state);
+    } else {
+      this.fetchInfoUpdateState('courseCode', false, '', 0);
+    }
+    window.onpopstate = () => {
+      this.setState(this.props.history.location.state);
+    };
   }
 
   sorter(sortee) {
     let order;
     if (sortee === this.state.sort) {
-      order = !this.state.order;
+      order = !this.state.desc;
     } else {
       if (sortee === 'courseName' || sortee === 'courseCode' || sortee === 'programShort') {
         order = false;
@@ -40,38 +61,56 @@ class CourseList extends React.Component {
         order = true;
       }
     }
-    this.fetchInfo(sortee, order, this.state.match, this.state.page);
+    this.fetchInfoUpdateState(sortee, order, this.state.match, this.state.page);
   }
 
   changePage(page) {
-    this.fetchInfo(this.state.sort, this.state.desc, this.state.match, page);
+    this.fetchInfoUpdateState(this.state.sort, this.state.desc, this.state.match, page);
   }
 
   navigation() {
     let pages = this.state.count/items_per_page;
     let rest = this.state.count%items_per_page;
     if (rest > 0) {
-      pages += 1;
+      pages = Math.floor(pages+1);
     }
+    let first = 1
     let prev = this.state.page;
     let current = this.state.page + 1;
     let next = this.state.page + 2;
     return (
-      <nav className="pagination is-centered" role="navigation" aria-label="pagination">
-        <ul className="pagination-list">
-          { prev > 0 &&
-              <li>
-                <a onClick={ () => this.changePage(prev-1) } className="pagination-link" aria-label="Page { prev }" aria-current="page">{ prev }</a>
-              </li> }
-              <li>
-                <a className="pagination-link is-current" aria-label="Page { current }" aria-current="page">{ current }</a>
-              </li>
-              { next <= pages &&
-                  <li>
-                    <a onClick={ () => this.changePage(next-1) } className="pagination-link" aria-label="Page { this.state.page + 2 }" aria-current="page">{ next }</a>
-                  </li> }
-                </ul>
-              </nav>);
+    <nav className="pagination is-centered" role="navigation" aria-label="pagination">
+      <ul className="pagination-list">
+      { prev > first &&
+        <li>
+          <a onClick={ () => this.changePage(first-1) } className="pagination-link" aria-label="Page { first }" aria-current="page">{ first }</a>
+        </li> }
+      { prev - 1 > first &&
+        <li>
+        <span className="pagination-ellipsis">&hellip;</span>
+        </li> }
+      { prev > 0 &&
+        <li>
+        <a onClick={ () => this.changePage(prev-1) } className="pagination-link" aria-label="Page { prev }" aria-current="page">{ prev }</a>
+        </li> }
+        <li>
+        <a className="pagination-link is-current" aria-label="Page { current }" aria-current="page">{ current }</a>
+        </li>
+      { next <= pages &&
+        <li>
+        <a onClick={ () => this.changePage(next-1) } className="pagination-link" aria-label="Page { this.state.page + 2 }" aria-current="page">{ next }</a>
+        </li> }
+      { next < pages-1 &&
+        <li>
+        <span className="pagination-ellipsis">&hellip;</span>
+        </li> }
+      { next < pages &&
+        <li>
+        <a onClick={ () => this.changePage(pages-1) } className="pagination-link" aria-label="Page { pages }" aria-current="page">{ pages }</a>
+        </li>
+        }
+      </ul>
+    </nav>);
   }
 
 
@@ -82,7 +121,7 @@ class CourseList extends React.Component {
       }
       const query = event.target.value;
       this.timeout = setTimeout(() => {
-        this.fetchInfo(this.state.sort, this.state.desc, query, 0);
+        this.fetchInfoUpdateState(this.state.sort, this.state.desc, query, 0);
       }, 500);
     };
     return (<input className="input" type="text" placeholder="Search" onChange={handleChange} />);
