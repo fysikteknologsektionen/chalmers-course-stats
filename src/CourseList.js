@@ -29,7 +29,7 @@ class CourseList extends React.Component {
       tempState.match = matchee;
       tempState.page = page;
       tempState.count = data.metadata[0].count;
-      this.props.history.push('/stats', tempState);
+      this.props.history.push('/stats/', tempState);
     }
   }
 
