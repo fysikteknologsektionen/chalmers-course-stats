@@ -36,7 +36,7 @@ class Statistics extends React.Component {
       fetch(process.env.PUBLIC_URL+'/results/' + value).then(r => r.json()),
       fetch(process.env.PUBLIC_URL+'/courses/' + value).then(r => r.json()),
     ]).then(([r1, r2]) => {
-      this.props.history.push(`/stats/${value}/`, { data: r1, info: r2 })
+      this.props.history.replace(`/stats/${value}/`, { data: r1, info: r2 })
       this.setState({ data: r1, info: r2 });
     });
   }
