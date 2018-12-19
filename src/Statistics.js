@@ -43,6 +43,7 @@ class Statistics extends React.Component {
       const regex = '^[a-zA-Z]{3}\\d{3}$';
       const match = val.match(regex);
       if (match) {
+        this.props.history.push(`/stats/${match[0]}/`)
         this.fetchInfo(match[0]);
       }
     };
