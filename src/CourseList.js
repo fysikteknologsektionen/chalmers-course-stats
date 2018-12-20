@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Footer from './Footer.js';
 
 
 const items_per_page = 20;
@@ -132,6 +133,7 @@ class CourseList extends React.Component {
           </table>
         </div>
         { this.navigation() }
+        <Footer />
       </div>);
   }
 }

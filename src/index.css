@@ -16,3 +16,7 @@ th:hover {
   width: 100%;
   overflow-x: auto;
 }
+
+footer {
+  text-align: center;
+}
