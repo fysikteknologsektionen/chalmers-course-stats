@@ -20,9 +20,9 @@ class CourseList extends React.Component {
   }
 
   fetchInfo(sortee, order, matchee, page) {
-    fetch(process.env.PUBLIC_URL+'/courses?sort=' + sortee + '_' + dict[order] + '&search=' + matchee + '&page=' + page + '&items=' + items_per_page)
+    fetch(`${process.env.PUBLIC_URL}/courses?sort=${sortee}_${dict[order]}&search=${matchee}&page=${page}&items=${items_per_page}`)
       .then(res => res.json())
-      .then(data => data.courses.length && data.metadata.length && this.setState({ data: data.courses, sort: sortee, order: order, match: matchee, page: page, count: data.metadata[0].count }));
+      .then(data => data.courses.length && data.metadata.length && this.setState({ data: data.courses, sort: sortee, desc: order, match: matchee, page: page, count: data.metadata[0].count }));
   }
 
   componentDidMount() {
@@ -32,7 +32,7 @@ class CourseList extends React.Component {
   sorter(sortee) {
     let order;
     if (sortee === this.state.sort) {
-      order = !this.state.order;
+      order = !this.state.desc;
     } else {
       if (sortee === 'courseName' || sortee === 'courseCode' || sortee === 'programShort') {
         order = false;
@@ -51,14 +51,24 @@ class CourseList extends React.Component {
     let pages = this.state.count/items_per_page;
     let rest = this.state.count%items_per_page;
     if (rest > 0) {
-      pages += 1;
+      pages = Math.floor(pages+1);
     }
+    let first = 1
     let prev = this.state.page;
     let current = this.state.page + 1;
     let next = this.state.page + 2;
     return (
       <nav className="pagination is-centered" role="navigation" aria-label="pagination">
         <ul className="pagination-list">
+          { prev > first &&
+              <li>
+                <a onClick={ () => this.changePage(first-1) } className="pagination-link" aria-label="Page { first }" aria-current="page">{ first }</a>
+              </li> }
+          { prev - 1 > first &&
+              <li>
+                <span className="pagination-ellipsis">&hellip;</span>
+              </li> 
+          }
           { prev > 0 &&
               <li>
                 <a onClick={ () => this.changePage(prev-1) } className="pagination-link" aria-label="Page { prev }" aria-current="page">{ prev }</a>
@@ -66,12 +76,21 @@ class CourseList extends React.Component {
               <li>
                 <a className="pagination-link is-current" aria-label="Page { current }" aria-current="page">{ current }</a>
               </li>
-              { next <= pages &&
-                  <li>
-                    <a onClick={ () => this.changePage(next-1) } className="pagination-link" aria-label="Page { this.state.page + 2 }" aria-current="page">{ next }</a>
-                  </li> }
-                </ul>
-              </nav>);
+          { next <= pages &&
+              <li>
+                <a onClick={ () => this.changePage(next-1) } className="pagination-link" aria-label="Page { this.state.page + 2 }" aria-current="page">{ next }</a>
+              </li> }
+          { next < pages-1 &&
+              <li>
+                <span className="pagination-ellipsis">&hellip;</span>
+              </li> }
+          { next < pages &&
+              <li>
+                <a onClick={ () => this.changePage(pages-1) } className="pagination-link" aria-label="Page { pages }" aria-current="page">{ pages }</a>
+              </li>
+           }
+            </ul>
+          </nav>);
   }
 
 
