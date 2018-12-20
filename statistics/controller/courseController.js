@@ -32,7 +32,6 @@ exports.courseList = ((req, res) => {
   if (req.query.page) {
     page = parseInt(req.query.page);
   }
-  console.log(page);
   if (req.query.items) {
     items = parseInt(req.query.items);
   }
@@ -73,7 +72,6 @@ exports.courseList = ((req, res) => {
       'metadata': [ {$group:  {_id: null, count: { $sum: 1 } } }, {$project: {_id: 0} } ],
     } },
   ], (err, result) => {
-    console.log(result[0]);
     res.json(result[0]);
   });
 });

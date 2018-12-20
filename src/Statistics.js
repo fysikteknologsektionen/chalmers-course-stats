@@ -6,6 +6,7 @@ const defaults = {
   courseName: '-',
   programShort: '-',
   programLong: '-',
+  averageGrade: '0',
   passRate: '0',
   total: '0',
 };
@@ -22,6 +23,9 @@ class Statistics extends React.Component {
 
   componentDidMount() {
     this.fetchInfo(this.props.match.params.initial);
+    window.onpopstate = () => {
+      this.setState(this.props.history.location.state);
+    };
   }
 
   percentScore(value,payload) {
@@ -34,6 +38,7 @@ class Statistics extends React.Component {
       fetch(process.env.PUBLIC_URL+'/results/' + value).then(r => r.json()),
       fetch(process.env.PUBLIC_URL+'/courses/' + value).then(r => r.json()),
     ]).then(([r1, r2]) => {
+      this.props.history.replace(`/stats/${value}/`, { data: r1, info: r2 })
       this.setState({ data: r1, info: r2 });
     });
   }
@@ -44,7 +49,7 @@ class Statistics extends React.Component {
       const regex = '^[a-zA-Z]{3}\\d{3}$';
       const match = val.match(regex);
       if (match) {
-        this.fetchInfo(match[0]);
+        this.fetchInfo(match[0])
       }
     };
     return (<input className="input" type="text" placeholder="Course code" onChange={handleChange} />);
@@ -78,6 +83,12 @@ class Statistics extends React.Component {
             <div>
               <p className="heading">Pass rate</p>
               <p className="title">{ Math.round(infoRender.passRate * 1000)/10 }%</p>
+            </div>
+          </div>
+          <div className="level-item has-text-centered">
+            <div>
+              <p className="heading">Average grade</p>
+              <p className="title">{ Math.round(infoRender.averageGrade*100)/100 }</p>
             </div>
           </div>
           <div className="level-item has-text-centered">
