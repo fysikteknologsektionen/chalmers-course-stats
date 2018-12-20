@@ -124,7 +124,7 @@ class CourseList extends React.Component {
         this.fetchInfoUpdateState(this.state.sort, this.state.desc, query, 0);
       }, 500);
     };
-    return (<input className="input" type="text" placeholder="Search" onChange={handleChange} />);
+    return (<input className="input" type="text" placeholder="Search" defaultValue={this.state.match} onChange={handleChange} />);
   }
 
   render() {
