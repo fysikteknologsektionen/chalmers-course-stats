@@ -5,6 +5,7 @@ const defaults = {
   courseName: '-',
   programShort: '-',
   programLong: '-',
+  averageGrade: '0',
   passRate: '0',
   total: '0',
 };
@@ -81,6 +82,12 @@ class Statistics extends React.Component {
             <div>
               <p className="heading">Pass rate</p>
               <p className="title">{ Math.round(infoRender.passRate * 1000)/10 }%</p>
+            </div>
+          </div>
+          <div className="level-item has-text-centered">
+            <div>
+              <p className="heading">Average grade</p>
+              <p className="title">{ Math.round(infoRender.averageGrade*100)/100 }</p>
             </div>
           </div>
           <div className="level-item has-text-centered">
