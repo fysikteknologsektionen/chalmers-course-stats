@@ -123,7 +123,7 @@ class CourseList extends React.Component {
       const query = event.target.value;
       this.timeout = setTimeout(() => {
         this.fetchInfoUpdateState(this.state.sort, this.state.desc, query, 0);
-      }, 500);
+      }, 10);
     };
     return (<input className="input" type="text" placeholder="Search" defaultValue={this.state.match} onChange={handleChange} />);
   }
