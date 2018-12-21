@@ -8,6 +8,7 @@
 
 th {
   color: hsl(217, 71%, 53%) !important;
+  user-select: none;
 }
 th:hover {
   cursor: pointer !important;
