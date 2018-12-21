@@ -84,7 +84,7 @@ class CourseList extends React.Component {
       <ul className="pagination-list">
       { prev > first &&
         <li>
-          <a onClick={ () => this.changePage(first-1) } className="pagination-link" aria-label="Page { first }" aria-current="page">{ first }</a>
+          <button onClick={ () => this.changePage(first-1) } className="pagination-link" aria-label="Page { first }" aria-current="page">{ first }</button>
         </li> }
       { prev - 1 > first &&
         <li>
@@ -92,14 +92,14 @@ class CourseList extends React.Component {
         </li> }
       { prev > 0 &&
         <li>
-        <a onClick={ () => this.changePage(prev-1) } className="pagination-link" aria-label="Page { prev }" aria-current="page">{ prev }</a>
+        <button onClick={ () => this.changePage(prev-1) } className="pagination-link" aria-label="Page { prev }" aria-current="page">{ prev }</button>
         </li> }
         <li>
-        <a className="pagination-link is-current" aria-label="Page { current }" aria-current="page">{ current }</a>
+        <button className="pagination-link is-current" aria-label="Page { current }" aria-current="page">{ current }</button>
         </li>
       { next <= pages &&
         <li>
-        <a onClick={ () => this.changePage(next-1) } className="pagination-link" aria-label="Page { this.state.page + 2 }" aria-current="page">{ next }</a>
+        <button onClick={ () => this.changePage(next-1) } className="pagination-link" aria-label="Page { this.state.page + 2 }" aria-current="page">{ next }</button>
         </li> }
       { next < pages-1 &&
         <li>
@@ -107,7 +107,7 @@ class CourseList extends React.Component {
         </li> }
       { next < pages &&
         <li>
-        <a onClick={ () => this.changePage(pages-1) } className="pagination-link" aria-label="Page { pages }" aria-current="page">{ pages }</a>
+        <button onClick={ () => this.changePage(pages-1) } className="pagination-link" aria-label="Page { pages }" aria-current="page">{ pages }</button>
         </li>
         }
       </ul>
