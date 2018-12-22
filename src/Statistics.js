@@ -18,6 +18,7 @@ class Statistics extends React.Component {
       data: null,
       info: null,
       exams: true,
+      stack: true,
     };
   }
 
@@ -106,6 +107,7 @@ class Statistics extends React.Component {
           <input type="checkbox" defaultChecked={this.state.stack} onClick={() => this.setState({ stack: !this.state.stack })}/>
           Stack
         </label>
+        &nbsp;
         <label className="radio">
           <input type="radio" name="setting" onClick={() => this.setState({ expand: 'none' })} defaultChecked />
           Standard
@@ -129,14 +131,13 @@ class Statistics extends React.Component {
     if (!this.state.stack) {
       heightFactor = 3;
     }
->>>>>>> Stashed changes
     return (
       <div className="container">
         { this.renderInput(this.handleChange) }
         { InfoBar }
         { radio }
-        { this.state.info && filtered &&
-          <ResponsiveContainer width="100%" height={Math.max(Object.keys(filtered).length * 40 * heightFactor, 300)}>
+        { this.state.info && this.state.data &&
+          <ResponsiveContainer width="100%" height={Math.max(Object.keys(this.state.data).length * 40 * heightFactor, 300)}>
             <BarChart
               data={this.state.data}
               layout="vertical"
