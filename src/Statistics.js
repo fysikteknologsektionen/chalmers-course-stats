@@ -103,11 +103,6 @@ class Statistics extends React.Component {
     );
     const radio = (
       <div className="control">
-        <label className="checkbox">
-          <input type="checkbox" defaultChecked={this.state.stack} onClick={() => this.setState({ stack: !this.state.stack })}/>
-          Stack
-        </label>
-        &nbsp;
         <label className="radio">
           <input type="radio" name="setting" onClick={() => this.setState({ expand: 'none' })} defaultChecked />
           Standard
@@ -119,6 +114,14 @@ class Statistics extends React.Component {
         <label className="radio">
           <input type="radio" name="setting" onClick={() => this.setState({ expand: 'expand' })} />
           Normalized
+        </label>
+        <label className="radio">
+          <input type="radio" name="stacked" onClick={() => this.setState({ stack: true })} defaultChecked />
+          Stacked
+        </label>
+        <label className="radio">
+          <input type="radio" name="stacked" onClick={() => this.setState({ stack: false })} />
+          Unstacked
         </label>
       </div>
     );
