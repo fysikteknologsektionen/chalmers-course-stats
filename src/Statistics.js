@@ -1,5 +1,6 @@
 import { ResponsiveContainer, ReferenceLine, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, LabelList } from 'recharts';
 import React from 'react';
+import Footer from './Footer.js';
 
 const defaults = {
   courseName: '-',
@@ -170,6 +171,7 @@ class Statistics extends React.Component {
               }
             </BarChart>
           </ResponsiveContainer>}
+          <Footer />
         </div>
     );
   }

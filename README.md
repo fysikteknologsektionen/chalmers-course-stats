@@ -12,8 +12,22 @@ You can find a guide on how to setup and use React [here](https://github.com/fac
 - MongoDB
 
 ### Setup
+```bash
+cd /srv/websites/statistics
+git clone https://github.com/Fysikteknologsektionen/chalmers-course-stats/
+npm install
+npm run build
+```
+Service instructions coming later.
 
-Instructions coming later.
+
+## Update instructions for new version
+```bash
+cd /srv/websites/statistics
+git pull
+npm run build
+systemctl restart node-course-statistics
+```
 
 ## Contributions, bug reports and suggestions
 If you would like to contribute or send feedback, please create an issue first.
