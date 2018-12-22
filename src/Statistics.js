@@ -17,6 +17,7 @@ class Statistics extends React.Component {
       expand: 'none',
       data: null,
       info: null,
+      exams: true,
     };
   }
 
@@ -101,6 +102,10 @@ class Statistics extends React.Component {
     );
     const radio = (
       <div className="control">
+        <label className="checkbox">
+          <input type="checkbox" defaultChecked={this.state.stack} onClick={() => this.setState({ stack: !this.state.stack })}/>
+          Stack
+        </label>
         <label className="radio">
           <input type="radio" name="setting" onClick={() => this.setState({ expand: 'none' })} defaultChecked />
           Standard
@@ -118,13 +123,20 @@ class Statistics extends React.Component {
 
     const grades = ['U', '3', 'G', 'TG', '4', '5'];
     const colors = {'U': 'hsl(20, 90%, 40%)', '3': 'hsl(100, 60%, 80%)', 'G': 'hsl(100, 60%, 80%)', 'TG': 'hsl(100, 60%, 80%)', '4': 'hsl(100, 60%, 60%)', '5': 'hsl(100, 60%, 40%)'};    
+
+
+    let heightFactor = 1;
+    if (!this.state.stack) {
+      heightFactor = 3;
+    }
+>>>>>>> Stashed changes
     return (
       <div className="container">
         { this.renderInput(this.handleChange) }
         { InfoBar }
         { radio }
-        { this.state.info && this.state.data &&
-          <ResponsiveContainer width="100%" height={Math.max(Object.keys(this.state.data).length * 40, 300)}>
+        { this.state.info && filtered &&
+          <ResponsiveContainer width="100%" height={Math.max(Object.keys(filtered).length * 40 * heightFactor, 300)}>
             <BarChart
               data={this.state.data}
               layout="vertical"
@@ -138,7 +150,7 @@ class Statistics extends React.Component {
               <Legend />
               { grades.map(grade =>
                 this.state.info[grade] > 0 &&
-              <Bar key={grade} barSize={20} dataKey={grade} stackId="a" fill={colors[grade]}>
+              <Bar key={grade} barSize={20} dataKey={grade} {... (this.state.stack ? {stackId: 'a'} : {})} fill={colors[grade]}>
                 <LabelList
                 fontSize={10}
                 valueAccessor={x => (x.width>20 ? (this.state.expand==='expand' ? this.percentScore(x[grade], x.payload) : x[grade]) : null)}
