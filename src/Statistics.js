@@ -117,11 +117,15 @@ class Statistics extends React.Component {
         </label>
         <label className="radio">
           <input type="radio" name="stacked" onClick={() => this.setState({ stack: true })} defaultChecked />
-          Stacked
+          <span class="icon">
+            <i class="fas fa-pause"></i>
+          </span>
         </label>
         <label className="radio">
           <input type="radio" name="stacked" onClick={() => this.setState({ stack: false })} />
-          Unstacked
+          <span class="icon">
+            <i class="fas fa-align-left"></i>
+          </span>
         </label>
       </div>
     );
