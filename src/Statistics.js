@@ -105,28 +105,35 @@ class Statistics extends React.Component {
     const radio = (
       <div className="control">
         <label className="radio">
-          <input type="radio" name="setting" onClick={() => this.setState({ expand: 'none' })} defaultChecked />
-          Standard
-        </label>
-        <label className="radio">
-          <input type="radio" name="setting" onClick={() => this.setState({ expand: 'silhouette' })} />
-          Median
-        </label>
-        <label className="radio">
-          <input type="radio" name="setting" onClick={() => this.setState({ expand: 'expand' })} />
-          Normalized
-        </label>
-        <label className="radio">
           <input type="radio" name="stacked" onClick={() => this.setState({ stack: true })} defaultChecked />
           <span class="icon">
             <i class="fas fa-pause"></i>
           </span>
         </label>
         <label className="radio">
-          <input type="radio" name="stacked" onClick={() => this.setState({ stack: false })} />
+          <input type="radio" name="stacked" onClick={() => {
+            let expand = this.state.expand
+            if (this.state.expand == 'silhouette') {
+              expand = 'none';
+            }
+            this.setState({ stack: false, expand: expand });
+          }} />
           <span class="icon">
             <i class="fas fa-align-left"></i>
           </span>
+        </label>
+        <label className="radio">
+          <input type="radio" name="setting" checked={this.state.expand === 'none'} onClick={() => this.setState({ expand: 'none' })} defaultChecked />
+          Standard
+        </label>
+        { this.state.stack && 
+        <label className="radio">
+          <input type="radio" name="setting" checked={this.state.expand === 'silhouette'} onClick={() => this.setState({ expand: 'silhouette' })} />
+          Median
+        </label> }
+        <label className="radio">
+          <input type="radio" name="setting" checked={this.state.expand === 'expand'} onClick={() => this.setState({ expand: 'expand' })} />
+          Normalized
         </label>
       </div>
     );
