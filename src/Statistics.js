@@ -140,7 +140,7 @@ class Statistics extends React.Component {
       } else if (this.state.exams || this.state.misc) {
         let bool = (item) => item.type.includes('Tentamen');
         if (this.state.misc) {
-          let bool = (item) => !item.type.includes('Tentamen');
+          bool = (item) => !item.type.includes('Tentamen');
         }
         this.state.data.map(item => {
           if (bool(item))
