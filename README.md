@@ -29,6 +29,13 @@ npm run build
 systemctl restart node-course-statistics
 ```
 
+## Updating database manually
+```bash
+cd /srv/websites/statistics/statistics/
+mongo --eval "db.dropDatabase();"
+node addFields.js
+```
+
 ## Contributions, bug reports and suggestions
 If you would like to contribute or send feedback, please create an issue first.
 
