@@ -18,6 +18,8 @@ class Statistics extends React.Component {
       expand: 'none',
       data: null,
       info: null,
+      exams: true,
+      misc: true,
     };
   }
 
@@ -114,20 +116,48 @@ class Statistics extends React.Component {
           <input type="radio" name="setting" onClick={() => this.setState({ expand: 'expand' })} />
           Normalized
         </label>
+        &nbsp;
+        <label className="checkbox">
+          <input type="checkbox" defaultChecked={this.state.exams} onClick={() => this.setState({ exams: !this.state.exams })}/>
+          Show exams
+        </label>
+        &nbsp;
+        <label className="checkbox">
+          <input type="checkbox" defaultChecked={this.state.misc} onClick={() => this.setState({ misc: !this.state.misc })}/>
+          Show misc
+        </label>
       </div>
     );
 
     const grades = ['U', '3', 'G', 'TG', '4', '5'];
     const colors = {'U': 'hsl(20, 90%, 40%)', '3': 'hsl(100, 60%, 80%)', 'G': 'hsl(100, 60%, 80%)', 'TG': 'hsl(100, 60%, 80%)', '4': 'hsl(100, 60%, 60%)', '5': 'hsl(100, 60%, 40%)'};    
+
+    let filtered = [];
+    if (this.state.data) {
+      if (this.state.exams && this.state.misc) {
+        filtered = this.state.data;
+
+      } else if (this.state.exams || this.state.misc) {
+        let bool = (item) => item.type.includes('Tentamen');
+        if (this.state.misc) {
+          bool = (item) => !item.type.includes('Tentamen');
+        }
+        this.state.data.map(item => {
+          if (bool(item))
+            filtered.push(item);
+          }
+        );
+      }
+    }
     return (
       <div className="container">
         { this.renderInput(this.handleChange) }
         { InfoBar }
         { radio }
-        { this.state.info && this.state.data &&
-          <ResponsiveContainer width="100%" height={Math.max(Object.keys(this.state.data).length * 40, 300)}>
+        { this.state.info && filtered &&
+          <ResponsiveContainer width="100%" height={Math.max(Object.keys(filtered).length * 40, 300)}>
             <BarChart
-              data={this.state.data}
+              data={filtered}
               layout="vertical"
               margin={{ top: 20, right: 40, left: 40, bottom: 5 }}
               stackOffset={this.state.expand}
