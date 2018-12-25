@@ -105,47 +105,55 @@ class Statistics extends React.Component {
       );
       const radio = (
         <div className="control">
-          <label className="radio">
-            <input type="radio" name="stacked" onClick={() => this.setState({ stack: true })} defaultChecked />
-            <span className="icon">
-              <i className="fas fa-pause"></i>
-            </span>
-          </label>
-          <label className="radio">
-            <input type="radio" name="stacked" onClick={() => {
-              let expand = this.state.expand
-              if (this.state.expand === 'silhouette') {
-                expand = 'none';
-              }
-              this.setState({ stack: false, expand: expand });
-            }} />
-            <span className="icon">
-              <i className="fas fa-align-left"></i>
-            </span>
-          </label>
-          <label className="radio">
-            <input type="radio" name="setting" checked={this.state.expand === 'none'} onChange={() => this.setState({ expand: 'none' })} />
-            Standard
-          </label>
-          { this.state.stack && 
-          <label className="radio">
-            <input type="radio" name="setting" checked={this.state.expand === 'silhouette'} onChange={() => this.setState({ expand: 'silhouette' })} />
-            Median
-          </label> }
-          <label className="radio">
-            <input type="radio" name="setting" checked={this.state.expand === 'expand'} onChange={() => this.setState({ expand: 'expand' })} />
-            Normalized
-          </label>
-          &nbsp;
-          <label className="checkbox">
-            <input type="checkbox" defaultChecked={this.state.exams} onClick={() => this.setState({ exams: !this.state.exams })}/>
-            Show exams
-          </label>
-          &nbsp;
-          <label className="checkbox">
-            <input type="checkbox" defaultChecked={this.state.misc} onClick={() => this.setState({ misc: !this.state.misc })}/>
-            Show misc
-          </label>
+          <div className="control-group">
+            <label className="radio">
+              <input type="radio" name="stacked" onClick={() => this.setState({ stack: true })} defaultChecked />
+              <span className="icon">
+                <i className="fas fa-pause"></i>
+              </span>
+            </label>
+            <br></br>
+            <label className="radio">
+              <input type="radio" name="stacked" onClick={() => {
+                let expand = this.state.expand
+                if (this.state.expand === 'silhouette') {
+                  expand = 'none';
+                }
+                this.setState({ stack: false, expand: expand });
+              }} />
+              <span className="icon">
+                <i className="fas fa-align-left"></i>
+              </span>
+            </label>
+          </div>
+          <div className="control-group">
+            <label className="radio">
+              <input type="radio" name="setting" checked={this.state.expand === 'none'} onChange={() => this.setState({ expand: 'none' })} />
+              Standard
+            </label>
+            <br></br>
+            <label className="radio">
+              <input type="radio" name="setting" checked={this.state.expand === 'expand'} onChange={() => this.setState({ expand: 'expand' })} />
+              Normalized
+            </label>
+            <br></br>
+            <label className="radio">
+              <input type="radio" name="setting" disabled={!this.state.stack} checked={this.state.expand === 'silhouette'} onChange={() => this.setState({ expand: 'silhouette' })} />
+              Median
+            </label> 
+            <br></br>
+          </div>
+          <div className="control-group">
+            <label className="checkbox">
+              <input type="checkbox" defaultChecked={this.state.exams} onClick={() => this.setState({ exams: !this.state.exams })}/>
+              Show exams
+            </label>
+            <br></br>
+            <label className="checkbox">
+              <input type="checkbox" defaultChecked={this.state.misc} onClick={() => this.setState({ misc: !this.state.misc })}/>
+              Show misc
+            </label>
+          </div>
         </div>
       );
 
