@@ -3,19 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "bulma": "^0.7.1",
+    "bulma": "^0.7.2",
     "express": "^4.16.3",
     "express-redis-cache": "^1.1.1",
     "mongodb": "^3.0.10",
-    "mongoose": "^5.4.0",
+    "mongoose": "^5.4.1",
     "node-xlsx": "^0.12.0",
     "npm": "^6.5.0",
-    "react": "^16.4.0",
-    "react-dom": "^16.4.0",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "^2.1.1",
+    "react-scripts": "^2.1.2",
     "rechart": "0.0.1",
-    "recharts": "^1.4.1"
+    "recharts": "^1.4.2"
   },
   "scripts": {
     "start": "react-scripts start",
