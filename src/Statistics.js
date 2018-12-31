@@ -106,14 +106,14 @@ class Statistics extends React.Component {
       const radio = (
         <div className="control">
           <div className="control-group">
-            <label className="radio">
+            <label className="radio" title="Stacked">
               <input type="radio" name="stacked" onClick={() => this.setState({ stack: true })} defaultChecked />
               <span className="icon">
                 <i className="fas fa-bars"></i>
               </span>
             </label>
             <br></br>
-            <label className="radio">
+            <label className="radio" title="Unstacked">
               <input type="radio" name="stacked" onClick={() => {
                 let expand = this.state.expand
                 if (this.state.expand === 'silhouette') {
