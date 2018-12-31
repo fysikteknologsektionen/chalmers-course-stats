@@ -10,6 +10,14 @@ th:hover {
   overflow-x: auto;
 }
 
+.container {
+  margin: 0 5%;
+}
+
+.container > * {
+  margin: 0.5em 0;
+}
+
 footer {
   text-align: center;
 }
@@ -17,6 +25,10 @@ footer {
 .control, .control-group {
   display: inline-block;
 }
-.control-group {
-  margin-right: 1em;
+
+.control-group:nth-child(2) {
+  margin: 0 0.5em;
+  padding: 0 0.5em;
+  border-left: 1px solid #666;
+  border-right: 1px solid #666;
 }
