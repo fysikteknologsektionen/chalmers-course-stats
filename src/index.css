@@ -22,6 +22,12 @@ footer {
   text-align: center;
 }
 
+.control {
+  display: block;
+  width: fit-content;
+  margin: auto;
+}
+
 .control, .control-group {
   display: inline-block;
 }
