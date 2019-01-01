@@ -10,6 +10,8 @@ const defaults = {
   passRate: '0',
   total: '0',
 };
+const grades = ['U', '3', 'G', 'TG', '4', '5'];
+const colors = {'U': 'hsl(20, 90%, 40%)', '3': 'hsl(100, 60%, 80%)', 'G': 'hsl(100, 60%, 80%)', 'TG': 'hsl(100, 60%, 80%)', '4': 'hsl(100, 60%, 60%)', '5': 'hsl(100, 60%, 40%)'};    
 
 class Statistics extends React.Component {
   constructor(props) {
@@ -31,9 +33,9 @@ class Statistics extends React.Component {
       };
     }
 
-    percentScore(value,payload) {
-      let scores = [payload['U'],payload['G'],payload['TG'], payload[3], payload[4], payload[5]];
-      return Math.round(100*(value/(scores.reduce((a, b) => a + b, 0))))+'%';
+    percentScore(value, payload) {
+      let total = grades.reduce(((acc, grade) => { return acc + payload[grade]; }), 0);
+      return Math.round(100*(value/total))+'%';
     }
 
     fetchInfo(value) {
@@ -157,8 +159,6 @@ class Statistics extends React.Component {
         </div>
       );
 
-      const grades = ['U', '3', 'G', 'TG', '4', '5'];
-      const colors = {'U': 'hsl(20, 90%, 40%)', '3': 'hsl(100, 60%, 80%)', 'G': 'hsl(100, 60%, 80%)', 'TG': 'hsl(100, 60%, 80%)', '4': 'hsl(100, 60%, 60%)', '5': 'hsl(100, 60%, 40%)'};    
 
       let heightFactor = 1;
       if (!this.state.stack) {
@@ -175,6 +175,16 @@ class Statistics extends React.Component {
           }
           filtered = this.state.data.filter(bool);
         }
+        if (this.state.expand === 'expand' && !this.state.stack) {
+          filtered = filtered.map(item => {
+            let total = grades.reduce(((acc, grade) => {return acc+item[grade]}), 0);
+            let it = Object.assign({}, item);
+            grades.forEach(grade => {
+              it[grade] /= total;
+            });
+            return it;
+          });
+        }
       }
       return (
         <div className="container">
@@ -190,7 +200,7 @@ class Statistics extends React.Component {
                   stackOffset={this.state.expand}
                   label="type"
                 >
-                  <XAxis type="number" orientation="top" />
+                  <XAxis type="number" orientation="top"/>
                   <YAxis type="category" tickLine={false} dataKey="date" />
                   <Tooltip itemSorter={()=>1} formatter={(value,name,props) => (this.state.expand==='expand'? this.percentScore(value, props.payload) : value) } />
                   <Legend />
