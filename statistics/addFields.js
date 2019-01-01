@@ -10,6 +10,8 @@ const courseProperties = [
   'programLong',
 ];
 const filename = 'results.xlsx';
+mongoose.set('useCreateIndex', true);
+mongoose.set('useNewUrlParser', true);
 mongoose.connect('mongodb://localhost/test');
 const db = mongoose.connection;
 let courses = {};
