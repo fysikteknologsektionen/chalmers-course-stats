@@ -28,6 +28,7 @@ git pull
 npm run build
 systemctl restart node-course-statistics
 ```
+A webhook script has been setup so deployment should happen upon a GitHub push event.
 
 ## Updating database manually
 ```bash
