@@ -45,6 +45,7 @@ npm install
 npm run build
 systemctl restart node-course-statistics
 ```
+A [webhook script](https://gist.github.com/gka/4627519) has been setup so deployment should happen upon a GitHub push event.
 
 # Database updates
 If the cron job is set up correctly then you don't need to do this.
