@@ -46,6 +46,14 @@ class Statistics extends React.Component {
       });
     }
 
+    renderBackButton() {
+      if (this.props.history.length > 2) {
+        return (<button id="all-courses" onClick={this.props.history.goBack}>&larr; All courses</button>);
+      } else {
+        return (<a id="all-courses" href={process.env.PUBLIC_URL+'/'}>&larr; All courses</a>);
+      }
+    }
+
     renderInput() {
       const handleChange = (event) => {
         const val = event.target.value;
@@ -178,7 +186,7 @@ class Statistics extends React.Component {
       }
       return (
         <div className="container">
-          <a id="all-courses" href={process.env.PUBLIC_URL+'/'}>&larr; All courses</a>
+          { this.renderBackButton() }
           { this.renderInput(this.handleChange) }
           { InfoBar }
           { radio }

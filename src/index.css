@@ -28,7 +28,19 @@ td > a {
   margin: 0 5%;
 }
 
-#all-courses {
+button#all-courses {
+  display: block;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  color: #3273dc;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+a#all-courses {
   display: block;
 }
 
