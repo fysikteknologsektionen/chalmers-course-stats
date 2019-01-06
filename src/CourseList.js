@@ -142,7 +142,7 @@ class CourseList extends React.Component {
           </div>
           <button onClick={() => this.setState({ showInfo: false })} className="modal-close is-large" aria-label="close"></button>
         </div>
-        <span className="title is-1">Courses</span>
+        <span className="title is-1">Course statistics at Chalmers </span>
         <span className="title is-5 icon has-text-info">
           <i onClick={() => this.setState({ showInfo: true })} className="fas fa-info-circle"></i>
         </span>
@@ -163,8 +163,8 @@ class CourseList extends React.Component {
             <tbody>
               { this.state.data && this.state.data.map((e) => (
                 <tr key={e.courseCode}>
-                  <th><Link to={`/stats/${e.courseCode}/`} >{e.courseCode}</Link></th>
-                  <td><Link to={`/stats/${e.courseCode}/`} >{e.courseName}</Link></td>
+                  <th><Link to={`/stats/${e.courseCode}/`} title={`View results for ${e.courseCode}`}>{e.courseCode}</Link></th>
+                  <td><Link to={`/stats/${e.courseCode}/`} title={`View results for ${e.courseCode}`}>{e.courseName}</Link></td>
                   <td><abbr title={e.programLong}>{e.programShort}</abbr></td>
                   <td>{Math.round(e.passRate * 1000) / 10}</td>
                   <td>{e.totalPass}</td>
