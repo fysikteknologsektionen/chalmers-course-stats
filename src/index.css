@@ -69,3 +69,7 @@ footer {
   border-left: 1px solid #666;
   border-right: 1px solid #666;
 }
+
+.recharts-tooltip-item-value {
+  color: #4a4a4a;
+}
