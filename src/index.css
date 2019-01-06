@@ -70,6 +70,10 @@ footer {
   border-right: 1px solid #666;
 }
 
-.recharts-tooltip-item-value {
+.recharts-tooltip-item > span {
   color: #4a4a4a;
+}
+
+.recharts-tooltip-item::before {
+  content: '\2B24 ';
 }
