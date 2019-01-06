@@ -178,6 +178,7 @@ class Statistics extends React.Component {
       }
       return (
         <div className="container">
+          <a id="all-courses" href={process.env.PUBLIC_URL+'/'}>&larr; All courses</a>
           { this.renderInput(this.handleChange) }
           { InfoBar }
           { radio }

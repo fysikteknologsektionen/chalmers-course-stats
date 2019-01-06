@@ -128,6 +128,10 @@ class CourseList extends React.Component {
     return (<input className="input" type="text" placeholder="Search" defaultValue={this.state.match} onChange={handleChange} />);
   }
 
+  renderTableHeaderColumn(key, name) {
+    return (<th onClick={() => this.sorter(key)} className={this.state.sort===key? (this.state.desc?'sorted-desc':'sorted-asc') :''}>{name}</th>);
+  }
+
   render() {
     return (
       <div className="container">
@@ -147,20 +151,20 @@ class CourseList extends React.Component {
           <table className="table is-hoverable is-striped is-fullwidth">
             <thead>
               <tr>
-                <th onClick={() => this.sorter('courseCode')}>Code</th>
-                <th onClick={() => this.sorter('courseName')}>Course</th>
-                <th onClick={() => this.sorter('programShort')}>Program</th>
-                <th onClick={() => this.sorter('passRate')}><abbr title="Pass rate">PR</abbr></th>
-                <th onClick={() => this.sorter('totalPass')}><abbr title="Number of passed results">P</abbr></th>
-                <th onClick={() => this.sorter('totalFail')}><abbr title="Numer of failed results">F</abbr></th>
-                <th onClick={() => this.sorter('averageGrade')}><abbr title="Average grade (3-5)">AG</abbr></th>
+                {this.renderTableHeaderColumn('courseCode', 'Code')}
+                {this.renderTableHeaderColumn('courseName', 'Course')}
+                {this.renderTableHeaderColumn('programShort', 'Program')}
+                {this.renderTableHeaderColumn('passRate', <abbr title="Pass rate">PR</abbr>)}
+                {this.renderTableHeaderColumn('totalPass', <abbr title="Number of passed results">P</abbr>)}
+                {this.renderTableHeaderColumn('totalFail', <abbr title="Numer of failed results">F</abbr>)}
+                {this.renderTableHeaderColumn('averageGrade', <abbr title="Average grade (3-5)">AG</abbr>)}
               </tr>
             </thead>
             <tbody>
               { this.state.data && this.state.data.map((e) => (
                 <tr key={e.courseCode}>
                   <th><Link to={`/stats/${e.courseCode}/`} >{e.courseCode}</Link></th>
-                  <td>{e.courseName}</td>
+                  <td><Link to={`/stats/${e.courseCode}/`} >{e.courseName}</Link></td>
                   <td><abbr title={e.programLong}>{e.programShort}</abbr></td>
                   <td>{Math.round(e.passRate * 1000) / 10}</td>
                   <td>{e.totalPass}</td>

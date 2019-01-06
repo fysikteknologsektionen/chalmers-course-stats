@@ -2,19 +2,37 @@ th {
   color: hsl(217, 71%, 53%) !important;
   user-select: none;
 }
-th:hover {
+thead > tr > th:hover {
   cursor: pointer !important;
+  background-color: #fafafa;
 }
 .tableContainer {
   width: 100%;
   overflow-x: auto;
 }
 
+td > a {
+  display: block;
+  color: unset;
+}
+
+.sorted-desc::after {
+  content: '\25b4';
+}
+
+.sorted-asc::after {
+  content: '\25be';
+}
+
 .container {
   margin: 0 5%;
 }
 
-.container > * {
+#all-courses {
+  display: block;
+}
+
+.container > *:not(#info) {
   margin: 0.5em 0;
 }
 
