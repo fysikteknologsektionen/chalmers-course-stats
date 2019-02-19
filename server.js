@@ -15,6 +15,12 @@ mongoose.connection.on('connected', () => {
   console.log('Mongoose on');
 });
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 app.use(express.static(path.join(__dirname, 'build')));
 
 app.use('/', router);
@@ -26,4 +32,3 @@ app.get('/*', function (req, res) {
 app.listen(port, () => {
   console.log('Ready to go');
 });
-
