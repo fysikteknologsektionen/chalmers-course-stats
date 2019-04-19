@@ -51,7 +51,7 @@ class Statistics extends React.Component {
     downloadData(value) {
       fetch(`${process.env.PUBLIC_URL}/results/${value}`)
       .then(r => r.json())
-      .then(json => json.map(result => [result.date,result.type,result[3],result[4],result[5],result.G,result.VG,result.TG].join(',')))
+      .then(json => json.map(result => [result.date,`"${result.type}"`,result[3],result[4],result[5],result.G,result.VG,result.TG].join(',')))
       .then(csv => 'Date,Type,U,3,4,5,G,VG,TG\r\n' + csv.join('\r\n'))
       .then(data => this.downloadCSV(data, value))
     }
