@@ -42,7 +42,7 @@ However if you want to manually update run these commands:
 cd /srv/websites/statistics
 git fetch
 git reset --hard FETCH_HEAD
-chown www-data:www-data -R *
+sudo chown www-data:www-data -R *
 npm install
 npm run build
 cd /srv/websites/statistics/statistics/
