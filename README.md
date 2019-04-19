@@ -40,11 +40,14 @@ Updates are handled automatically on ftek.se by a PHP script that runs upon a pu
 However if you want to manually update run these commands:
 ```bash
 cd /srv/websites/statistics
-git stash
-git pull
+git fetch
+git reset --hard FETCH_HEAD
 npm install
 npm run build
-systemctl restart node-course-statistics
+cd /srv/websites/statistics/statistics/
+chmod +x update.sh
+./update.sh .
+sudo /bin/systemctl restart node-course-statistics
 ```
 A [webhook script](https://gist.github.com/gka/4627519) has been setup so deployment should happen upon a GitHub push event.
 
