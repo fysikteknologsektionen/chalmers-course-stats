@@ -40,12 +40,29 @@ class Statistics extends React.Component {
 
     fetchInfo(value) {
       Promise.all([
-        fetch(process.env.PUBLIC_URL+'/results/' + value).then(r => r.json()),
-        fetch(process.env.PUBLIC_URL+'/courses/' + value).then(r => r.json()),
+        fetch(`${process.env.PUBLIC_URL}/results/${value}`).then(r => r.json()),
+        fetch(`${process.env.PUBLIC_URL}/courses/${value}`).then(r => r.json()),
       ]).then(([r1, r2]) => {
         this.props.history.replace(`/stats/${value}/`, { data: r1, info: r2 })
         this.setState({ data: r1, info: r2 });
       });
+    }
+
+    downloadData(value) {
+      fetch(`${process.env.PUBLIC_URL}/results/${value}`)
+      .then(r => r.json())
+      .then(json => json.map(result => [result.date,result.type,result[3],result[4],result[5],result.G,result.VG,result.TG].join(',')))
+      .then(csv => 'Date,Type,U,3,4,5,G,VG,TG\r\n' + csv.join('\r\n'))
+      .then(data => this.downloadCSV(data, value))
+    }
+
+    downloadCSV(data, fileName) {
+      var hiddenElement = document.createElement('a');
+          hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(data);
+          hiddenElement.target = '_blank';
+          hiddenElement.download = `${fileName}.csv`;
+          hiddenElement.click();
+          hiddenElement.remove();
     }
 
     renderBackButton() {
@@ -54,6 +71,10 @@ class Statistics extends React.Component {
       } else {
         return (<a id="all-courses" href={process.env.PUBLIC_URL+'/'}>&larr; All courses</a>);
       }
+    }
+
+    renderDownloadButton() {
+      return (<button id="download-csv" title="Download a CSV file of unfiltered data" className="button is-small is-link is-outlined" onClick={() => this.downloadData(this.props.match.params.initial.toUpperCase())}>Download CSV</button>);
     }
 
     renderInput() {
@@ -154,6 +175,8 @@ class Statistics extends React.Component {
             <br></br>
           </div>
           <div className="control-group">
+            { this.renderDownloadButton() }
+            <br></br>
             <label className="checkbox">
               <input type="checkbox" defaultChecked={this.state.exams} onClick={() => this.setState({ exams: !this.state.exams })}/>
               Show exams
