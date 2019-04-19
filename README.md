@@ -31,7 +31,7 @@ This can be done by using [this configuration for mongod](https://gist.github.co
 To get continuous database updates you need to setup a cron job.
 Here is an example that will run `update.sh` every second day.:
 
-`0 0 1-31/2 * * /srv/websites/statistics/statistics/update.sh >/dev/null 2>&1`
+`0 0 1-31/2 * * /srv/websites/statistics/statistics/update.sh /srv/websites/statistics/statistics >/dev/null 2>&1`
 
 
 # Software updates
@@ -40,6 +40,7 @@ Updates are handled automatically on ftek.se by a PHP script that runs upon a pu
 However if you want to manually update run these commands:
 ```bash
 cd /srv/websites/statistics
+git stash
 git pull
 npm install
 npm run build
