@@ -42,10 +42,10 @@ However if you want to manually update run these commands:
 cd /srv/websites/statistics
 git fetch
 git reset --hard FETCH_HEAD
-sudo chown www-data:www-data -R *
+chown www-data:www-data -R *
 npm install
 npm run build
-cd /srv/websites/statistics/statistics/
+cd statistics
 chmod +x update.sh
 ./update.sh .
 sudo /bin/systemctl restart node-course-statistics
