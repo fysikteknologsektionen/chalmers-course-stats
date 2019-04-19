@@ -1,21 +1,21 @@
 {
   "name": "ftek-course-statistics",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "bulma": "^0.7.2",
+    "bulma": "^0.7.4",
     "express": "^4.16.3",
     "express-redis-cache": "^1.1.1",
-    "mongodb": "^3.0.10",
-    "mongoose": "^5.4.1",
+    "mongodb": "^3.2.3",
+    "mongoose": "^5.5.2",
     "node-xlsx": "^0.12.0",
     "npm": "^6.9.0",
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.1.8",
     "rechart": "0.0.1",
-    "recharts": "^1.4.2"
+    "recharts": "^1.5.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -30,7 +30,7 @@
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.8.0",
     "eslint-plugin-standard": "^3.1.0",
-    "nodemon": "^1.18.9"
+    "nodemon": "^1.18.11"
   },
   "proxy": "http://localhost:3001",
   "browserslist": [
