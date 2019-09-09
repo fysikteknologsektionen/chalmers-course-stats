@@ -1,5 +1,7 @@
 node_modules
 build
-results.xlsx
+results.xlsx*
+temp.xlsx
+*.log
 db/
 .vscode
