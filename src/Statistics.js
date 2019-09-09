@@ -11,7 +11,14 @@ const defaults = {
   total: '0',
 };
 const grades = ['U', '3', 'G', 'TG', '4', '5'];
-const colors = {'U': 'hsl(20, 90%, 40%)', '3': 'hsl(100, 60%, 80%)', 'G': 'hsl(100, 60%, 80%)', 'TG': 'hsl(100, 60%, 80%)', '4': 'hsl(100, 60%, 60%)', '5': 'hsl(100, 60%, 40%)'};    
+const colors = {
+  'U': 'hsl(20, 90%, 40%)',
+  '3': 'hsl(100, 60%, 80%)',
+  'G': 'hsl(100, 60%, 80%)',
+  'TG': 'hsl(100, 60%, 80%)',
+  '4': 'hsl(100, 60%, 60%)',
+  '5': 'hsl(100, 60%, 40%)'
+};    
 
 class Statistics extends React.Component {
   constructor(props) {
