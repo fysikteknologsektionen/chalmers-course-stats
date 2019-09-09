@@ -1,6 +1,7 @@
 import { ResponsiveContainer, ReferenceLine, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, LabelList } from 'recharts';
 import React from 'react';
 import Footer from './Footer.js';
+import Notice from './Notice.js';
 
 const defaults = {
   courseName: '-',
@@ -227,6 +228,7 @@ class Statistics extends React.Component {
       return (
         <div className="container">
           { this.renderBackButton() }
+          <Notice />
           { this.renderInput(this.handleChange) }
           { InfoBar }
           { radio }

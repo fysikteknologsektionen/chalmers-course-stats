@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Footer from './Footer.js';
-
+import Notice from './Notice.js';
 
 const items_per_page = 20;
 const dict = { true: 'desc', false: 'asc' };
@@ -146,6 +146,7 @@ class CourseList extends React.Component {
         <span className="title is-5 icon has-text-info">
           <i onClick={() => this.setState({ showInfo: true })} className="fas fa-info-circle"></i>
         </span>
+        <Notice />
         { this.renderInput() }
         <div className="tableContainer">
           <table className="table is-hoverable is-striped is-fullwidth">
