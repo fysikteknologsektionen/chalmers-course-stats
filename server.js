@@ -8,7 +8,7 @@ require('./statistics/models/Course');
 const router = require('./statistics/routes/routes');
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 const dbURI = 'mongodb://localhost/test';
 mongoose.connect(dbURI, {
   useNewUrlParser: true,
