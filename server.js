@@ -10,7 +10,10 @@ const router = require('./statistics/routes/routes');
 const app = express();
 const port = 3001;
 const dbURI = 'mongodb://localhost/test';
-mongoose.connect(dbURI);
+mongoose.connect(dbURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 mongoose.connection.on('connected', () => {
   console.log('Mongoose on');
 });
