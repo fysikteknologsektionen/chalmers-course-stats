@@ -9,7 +9,7 @@ const router = require('./statistics/routes/routes');
 
 const app = express();
 const port = process.env.PORT || 3001;
-const dbURI = 'mongodb://localhost/test';
+const dbURI = 'mongodb://localhost/stats';
 mongoose.connect(dbURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
