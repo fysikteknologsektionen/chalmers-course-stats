@@ -12,7 +12,10 @@ const courseProperties = [
 const filename = 'results.xlsx';
 mongoose.set('useCreateIndex', true);
 mongoose.set('useNewUrlParser', true);
-mongoose.connect('mongodb://localhost/test');
+mongoose.connect('mongodb://localhost/stats', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 const db = mongoose.connection;
 let courses = {};
 db.on('error', console.error.bind(console, 'connection error:'));
