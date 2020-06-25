@@ -30,7 +30,7 @@ class CourseList extends React.Component {
       tempState.match = matchee;
       tempState.page = page;
       tempState.count = data.metadata[0].count;
-      this.props.history.push('/stats/', tempState);
+      this.props.history.push('/', tempState);
     }
   }
 
@@ -164,8 +164,8 @@ class CourseList extends React.Component {
             <tbody>
               { this.state.data && this.state.data.map((e) => (
                 <tr key={e.courseCode}>
-                  <th><Link to={`/stats/${e.courseCode}/`} title={`View results for ${e.courseCode}`}>{e.courseCode}</Link></th>
-                  <td><Link to={`/stats/${e.courseCode}/`} title={`View results for ${e.courseCode}`}>{e.courseName}</Link></td>
+                  <th><Link to={`/${e.courseCode}/`} title={`View results for ${e.courseCode}`}>{e.courseCode}</Link></th>
+                  <td><Link to={`/${e.courseCode}/`} title={`View results for ${e.courseCode}`}>{e.courseName}</Link></td>
                   <td><abbr title={e.programLong}>{e.programShort}</abbr></td>
                   <td>{Math.round(e.passRate * 1000) / 10}</td>
                   <td>{e.totalPass}</td>
