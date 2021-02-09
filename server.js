@@ -34,6 +34,6 @@ app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-app.listen(process.env.APP_PORT, () => {
+app.listen(process.env.APP_PORT, process.env.APP_HOST, () => {
   console.log(`Express listening on ${process.env.APP_PORT}...`);
 });
