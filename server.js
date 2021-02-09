@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -8,14 +9,15 @@ require('./statistics/models/Course');
 const router = require('./statistics/routes/routes');
 
 const app = express();
-const port = process.env.PORT || 3001;
-const dbURI = 'mongodb://localhost/stats';
+const dbURI = `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_DATABASE}`;
 mongoose.connect(dbURI, {
+  user: process.env.DB_USER,
+  pass: process.env.DB_PASSWORD,
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
 mongoose.connection.on('connected', () => {
-  console.log('Mongoose on');
+  console.log('Mongoose connected to database...');
 });
 
 app.use(function(req, res, next) {
@@ -32,6 +34,6 @@ app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-app.listen(port, 'localhost', () => {
-  console.log('Ready to go');
+app.listen(process.env.APP_PORT, () => {
+  console.log(`Express listening on ${process.env.APP_PORT}...`);
 });

@@ -1,10 +1,6 @@
 module.exports = {
-  name: "Chalmers Course Stats",
+  name: "Ftek Course Stats",
   script: "./server.js",
   log_file: "./node.log",
-  time: true,
-  env: {
-    NODE_ENV: "production",
-    PORT: "3001"
-  }
+  time: true
 }
