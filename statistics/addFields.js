@@ -97,8 +97,8 @@ db.once('open', () => {
       ], (err1, result1) => {
         console.log(err1);
         Course.aggregate([
-          { $addFields: { total: { $add: ['$results.U', '$totalPass'] },
-            passRate: { $cond: [{ $eq: ['$totalPass', 0] }, 0, { $divide: ['$totalPass', { $add: ['$totalPass', '$results.U'] }] }] } } },
+          { $addFields: { total: { $add: [{ $sum: '$results.U' }, '$totalPass'] },
+            passRate: { $cond: [{ $eq: ['$totalPass', 0] }, 0, { $divide: ['$totalPass', { $add: ['$totalPass', { $sum: '$results.U' }] }] }] } } },
           { $out: 'courses' },
         ], (err2, result2) => {
           console.log(err2);
