@@ -8,7 +8,6 @@ const schema = new mongoose.Schema({
   programLong: String,
   results: [Result],
   totalPass: { type: Number, default: 0 },
-  totalFail: { type: Number, default: 0 },
   averageGrade: { type: Number, default: 0 },
   U: { type: Number, default: 0 },
   G: { type: Number, default: 0 },

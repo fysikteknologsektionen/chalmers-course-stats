@@ -73,7 +73,7 @@ db.once('open', () => {
   Course.collection.insertMany(wrapped, (err, r) => {
     Result.collection.insertMany(results, (err, r) => {
       Course.aggregate([
-        { $addFields: { totalFail: { $sum: '$results.U' },
+        { $addFields: {
           U: { $sum: '$results.U' },
           G: { $sum: '$results.G' },
           TG: { $sum: '$results.TG' },
@@ -97,8 +97,8 @@ db.once('open', () => {
       ], (err1, result1) => {
         console.log(err1);
         Course.aggregate([
-          { $addFields: { total: { $add: ['$totalFail', '$totalPass'] },
-            passRate: { $cond: [{ $eq: ['$totalPass', 0] }, 0, { $divide: ['$totalPass', { $add: ['$totalPass', '$totalFail'] }] }] } } },
+          { $addFields: { total: { $add: ['$results.U', '$totalPass'] },
+            passRate: { $cond: [{ $eq: ['$totalPass', 0] }, 0, { $divide: ['$totalPass', { $add: ['$totalPass', '$results.U'] }] }] } } },
           { $out: 'courses' },
         ], (err2, result2) => {
           console.log(err2);

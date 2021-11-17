@@ -65,7 +65,7 @@ exports.courseList = ((req, res) => {
     { $match: together },
     { $facet: {
       'courses': [ 
-        { $project: { _id: 0, courseName: 1, courseCode: 1, totalPass: 1, totalFail: 1, programShort: 1, programLong: 1, passRate: 1, averageGrade: 1, total: 1 } },
+        { $project: { _id: 0, courseName: 1, courseCode: 1, totalPass: 1, U: 1, programShort: 1, programLong: 1, passRate: 1, averageGrade: 1, total: 1 } },
         { $sort: sort },
         { $skip: page*items },
         { $limit: items }],
