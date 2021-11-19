@@ -65,7 +65,7 @@ async function main() {
 
     if(newEntry){//If there is at least one new result of any given course.
       //Update the results of a course entry in the database.
-      await Course.updateOne({courseCode: co.courseCode}, {$set: {results: updatedResults}});
+      await Course.updateOne({courseCode: co.courseCode}, {$set: {results: updatedResults, updatedAt: Date.now()}});
       console.log("Course " + co.courseCode + " updated.");
     
     }

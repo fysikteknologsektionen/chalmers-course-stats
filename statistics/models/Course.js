@@ -15,6 +15,7 @@ const schema = new mongoose.Schema({
   3: { type: Number, default: 0 },
   4: { type: Number, default: 0 },
   5: { type: Number, default: 0 },
+  updatedAt: {type: Date, default: Date.now},
 });
 
 module.exports = mongoose.model('Course', schema);
