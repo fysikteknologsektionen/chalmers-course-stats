@@ -12,6 +12,7 @@ const courseProperties = [
 ];
 const filename = 'results.xlsx';
 
+//Main Async function
 async function main() {
   mongoose.set('useCreateIndex', true);
   mongoose.set('useNewUrlParser', true);
@@ -25,20 +26,23 @@ async function main() {
   let courses = exportDataFromSpreadsheet();
   let results = [];
 
+  //Loop through all the courses in the datasheet one by one.
   for(key in courses) {
     let co = courses[key];
 
     let datesInDb = [];
-    let newResults = [];
+    let updatedResults = [];
+    //Try to find that course in the database by its course code.
     let dbCourse = await Course.findOne({courseCode: co.courseCode}, {results: 1});
 
     if(dbCourse != null) {
       for(let i in dbCourse.results) {
+        //Check what exam dates are already in the databse (no need to add them again).
         datesInDb.push(dbCourse.results[i].date);
       }
-
-      newResults = dbCourse.results;
-    } else {
+      //Add all the existing results to a array of updated results. Any new results will be appended to this one.
+      updatedResults = dbCourse.results;
+    } else { //If the course does not yet exist in the database add it!
       await Course.create(co);
     }
     
@@ -48,26 +52,27 @@ async function main() {
 
     let newEntry = false;
 
-    for(let i in co.results) {
-      if(datesInDb.indexOf(co.results[i].date) == -1) {
+    for(let i in co.results) { //For each result of a course in spreadsheet
+      if(datesInDb.indexOf(co.results[i].date) == -1) { //If it does not exist in the database already
         console.log("NEW ENTRY: " + co.results[i].date);
-        results.push(co.results[i]);
+        results.push(co.results[i]); //Add it to the array of results being added
 
-        newResults.push(co.results[i])
+        updatedResults.push(co.results[i]); //Add it to the array of updated results.
 
         newEntry = true;
       }
     }
 
-    if(newEntry){
-
-      await Course.updateOne({courseCode: co.courseCode}, {$set: {results: newResults}});
+    if(newEntry){//If there is at least one new result of any given course.
+      //Update the results of a course entry in the database.
+      await Course.updateOne({courseCode: co.courseCode}, {$set: {results: updatedResults}});
       console.log("Course " + co.courseCode + " updated.");
-      
+    
     }
   }
 
-  if(results.length != 0) {
+  if(results.length != 0) { 
+    //Insert the new results into the database.
     Result.collection.insertMany(results, (err, r) => {
       Course.aggregate([
         { $addFields: {
@@ -117,8 +122,10 @@ function exportDataFromSpreadsheet() {
   let courses = {};
   console.log('Reading spreadsheet...');
   const worksheet = xlsx.parse(`${__dirname}/${filename}`);
+  //Look at the 2nd onwards datasheet only, probably old format will get changed.
   worksheet.slice(1).forEach((ws) => {
     const data = ws.data.slice(1);
+    //For each row in the data from the 2nd onwards
     data.forEach((r) => {
       let courseCode, courseName, programShort, programLong, resultId, type, points, date, grade, count, fraction;
       [courseCode, courseName, programShort, programLong, resultId, type, points, date, grade, count, fraction] = r;
@@ -127,7 +134,8 @@ function exportDataFromSpreadsheet() {
       } else {
         date = new Date(date+' 12:00').toISOString().substr(0,10);
       }
-      if (!(courseCode in courses)) {
+
+      if (!(courseCode in courses)) { //If a row with a new course appears
         let course = new Course();
         courseProperties.forEach((p, i) => {
           course[p] = r[i];
@@ -139,7 +147,7 @@ function exportDataFromSpreadsheet() {
         result[grade] = count;
         course.results = [result];
         courses[courseCode] = course;
-      } else {
+      } else { //A row with a previously seen course appears
         let course = courses[courseCode];
         let results = course.results;
         let result = results[results.length - 1];
