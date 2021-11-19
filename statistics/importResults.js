@@ -115,6 +115,7 @@ async function main() {
     });
   }else {
     console.log("No new results added.")
+    process.exit();
   }
 }
 
