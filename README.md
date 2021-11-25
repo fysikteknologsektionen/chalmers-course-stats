@@ -1,7 +1,7 @@
 # Chalmers Course Statistics
 This is a simple web app for viewing grade statistics of courses at [Chalmers University of Technology](https://chalmers.se).
 
-The data is provided by Chalmers via a public [Excel document](http://document.chalmers.se/doc/00000000-0000-0000-0000-00001C968DC6) which lists **all** the results of **all** courses...
+The data is provided by Chalmers via a Excel document obtained by email which lists **all** the results of **all** courses.
 
 This app also provides [a public REST API](API.md).
 
@@ -28,10 +28,12 @@ To have the app always running you will now create two systemd services:
 
 This can be done by using [this configuration for mongod](https://gist.github.com/jwilm/5842956) and following [this guide for node](https://www.axllent.org/docs/view/nodejs-service-with-systemd/). Some tweaks might be neccesary to get it working for this specific app. For example the node service should start `node server.js` in our case.
 
-To get continuous database updates you need to setup a cron job.
-Here is an example that will run `update.sh` every second day.:
+**NOTE** The data is currently obtained by manual email as Chalmers does not publish it as a online document anymore. The paragraph below is the old way of updating the data which might be relevant again in the future. 
 
-`0 0 1-31/2 * * /srv/websites/statistics/statistics/update.sh /srv/websites/statistics/statistics >/dev/null 2>&1`
+_To get continuous database updates you need to setup a cron job.
+Here is an example that will run `update.sh` every second day.:_ 
+
+_`0 0 1-31/2 * * /srv/websites/statistics/statistics/update.sh /srv/websites/statistics/statistics >/dev/null 2>&1`_
 
 
 # Software updates
@@ -46,21 +48,31 @@ chown www-data:www-data -R *
 npm install
 npm run build
 cd statistics
-chmod +x update.sh
-./update.sh .
+#chmod +x update.sh     #OLD
+#./update.sh .          #OLD
 sudo /bin/systemctl restart node-course-statistics
 ```
 A [webhook script](https://gist.github.com/gka/4627519) has been setup so deployment should happen upon a GitHub push event.
 
-# Database updates
-If the cron job is set up correctly then you don't need to do this.
 
-However these are the commands for a manual update:
+
+# Database updates
+The database is updated manually by running the following commands after placing the relevant excel document of results in the `statistics` folder:
+```bash
+cd /srv/websites/statistics/statistics
+node importResults.js
+```
+
+Below are the old way of importing things. **You should not need to use them.**
+
+_If the cron job is set up correctly then you don't need to do this._
+
+_However these are the commands for a manual update:_
 ```bash
 cd /srv/websites/statistics/statistics/
 mongo --eval "db.dropDatabase();"
 node addFields.js
-```
+``` 
 
 # Development
 
@@ -74,10 +86,15 @@ cd /path/to/development/directory
 git clone https://github.com/Fysikteknologsektionen/chalmers-course-stats/
 npm install
 ```
+
+
+
 To start the server run (in separate terminals)
-- `mongod`
+- `mongod` (use `mongod --dbpath` to run the database from the same folder)
 - `npm start`
 - `node server.js`
+
+If you find yourself with some error after running `node server.js` running `npm run build` before might fix it.
 
 and then point your browser to [localhost:3000/stats/](http://localhost:3000/stats/). Any updates to any file will automatically refresh the browser.
 
