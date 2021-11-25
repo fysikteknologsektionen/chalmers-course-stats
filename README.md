@@ -1,4 +1,5 @@
 # Chalmers Course Statistics
+
 This is a simple web app for viewing grade statistics of courses at [Chalmers University of Technology](https://chalmers.se).
 
 The data is provided by Chalmers via a Excel document obtained by email which lists **all** the results of **all** courses.
@@ -6,7 +7,9 @@ The data is provided by Chalmers via a Excel document obtained by email which li
 This app also provides [a public REST API](API.md).
 
 # Installation
+
 ## Requirements
+
 - [Node.js](https://nodejs.org)
 - [MongoDB](https://mongodb.com)
 
@@ -37,9 +40,11 @@ _`0 0 1-31/2 * * /srv/websites/statistics/statistics/update.sh /srv/websites/sta
 
 
 # Software updates
+
 Updates are handled automatically on ftek.se by a PHP script that runs upon a push event via GitHub Webhooks.
 
 However if you want to manually update run these commands:
+
 ```bash
 cd /srv/websites/statistics
 git fetch
@@ -52,11 +57,11 @@ cd statistics
 #./update.sh .          #OLD
 sudo /bin/systemctl restart node-course-statistics
 ```
+
 A [webhook script](https://gist.github.com/gka/4627519) has been setup so deployment should happen upon a GitHub push event.
 
-
-
 # Database updates
+
 The database is updated manually by running the following commands after placing the relevant excel document of results in the `statistics` folder:
 ```bash
 cd /srv/websites/statistics/statistics
@@ -68,26 +73,28 @@ Below are the old way of importing things. **You should not need to use them.**
 _If the cron job is set up correctly then you don't need to do this._
 
 _However these are the commands for a manual update:_
+
 ```bash
 cd /srv/websites/statistics/statistics/
 mongo --eval "db.dropDatabase();"
 node addFields.js
-``` 
+```
 
 # Development
 
 ## Contributions, bug reports and suggestions
+
 If you would like to contribute or send feedback, please [create an issue](https://github.com/Fysikteknologsektionen/chalmers-course-stats/issues/new) first.
 
 ## Set up development environment
+
 Run these commands:
+
 ```bash
 cd /path/to/development/directory
 git clone https://github.com/Fysikteknologsektionen/chalmers-course-stats/
 npm install
 ```
-
-
 
 To start the server run (in separate terminals)
 - `mongod` (use `mongod --dbpath` to run the database from the same folder)
@@ -99,6 +106,7 @@ If you find yourself with some error after running `node server.js` running `npm
 and then point your browser to [localhost:3000/stats/](http://localhost:3000/stats/). Any updates to any file will automatically refresh the browser.
 
 # Credits
+
 This app was created by [Jan Liu](https://github.com/fsharpasharp/) who was inspired by Johan Bowald's [exam statistics page](http://tenta.bowald.se). With the help of [Johan Winther](https://github.com/JohanWinther) the app was ported over to Fysikteknologsektionen's website ([ftek.se/stats](https://ftek.se/stats)).
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
