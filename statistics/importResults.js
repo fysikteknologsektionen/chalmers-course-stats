@@ -10,7 +10,7 @@ const courseProperties = [
   'programShort',
   'programLong',
 ];
-const filename = 'results.xlsx';
+const filename = 'Tentastatistik.xlsx';
 
 //Main Async function
 async function main() {
@@ -29,7 +29,6 @@ async function main() {
   //Loop through all the courses in the datasheet one by one.
   for(key in courses) {
     let co = courses[key];
-
     let datesInDb = [];
     let updatedResults = [];
     //Try to find that course in the database by its course code.
@@ -37,24 +36,25 @@ async function main() {
 
     if(dbCourse != null) {
       for(let i in dbCourse.results) {
-        //Check what exam dates are already in the databse (no need to add them again).
-        datesInDb.push(dbCourse.results[i].date);
+        //Check what exam ids are already in the databse (no need to add them again).
+        datesInDb.push(dbCourse.results[i].resultId);
       }
       //Add all the existing results to a array of updated results. Any new results will be appended to this one.
       updatedResults = dbCourse.results;
     } else { //If the course does not yet exist in the database add it!
+      console.log("Creating a new course: " + co.courseCode);
       await Course.create(co);
     }
     
     
-    console.log("COURSE: " + co.courseCode);
+    console.log("Checking course: " + co.courseCode);
     //console.log(resultAlreadyInDb);
 
     let newEntry = false;
 
     for(let i in co.results) { //For each result of a course in spreadsheet
-      if(datesInDb.indexOf(co.results[i].date) == -1) { //If it does not exist in the database already
-        console.log("NEW ENTRY: " + co.results[i].date);
+      if(datesInDb.indexOf(co.results[i].resultId) == -1) { //If it does not exist in the database already
+        console.log("NEW ENTRY: " + co.results[i].resultId);
         results.push(co.results[i]); //Add it to the array of results being added
 
         updatedResults.push(co.results[i]); //Add it to the array of updated results.
@@ -124,10 +124,11 @@ function exportDataFromSpreadsheet() {
   console.log('Reading spreadsheet...');
   const worksheet = xlsx.parse(`${__dirname}/${filename}`);
   //Look at the 2nd onwards datasheet only, probably old format will get changed.
-  worksheet.slice(1).forEach((ws) => {
+  worksheet.slice(0).forEach((ws) => {
     const data = ws.data.slice(1);
     //For each row in the data from the 2nd onwards
     data.forEach((r) => {
+      //Course Code, Course Name, ex: TKTFY, ex: Teknisk Fysik, Examination ID number, Type of examination, Course examination moment HP, date, grade, amount, fraction of total 
       let courseCode, courseName, programShort, programLong, resultId, type, points, date, grade, count, fraction;
       [courseCode, courseName, programShort, programLong, resultId, type, points, date, grade, count, fraction] = r;
       if (date.toString().length === 5) { // Excel short date format
@@ -143,6 +144,7 @@ function exportDataFromSpreadsheet() {
         });
 
         let result = new Result();
+        result.resultId = resultId;
         result.date = date;
         result.type = type;
         result[grade] = count;
@@ -152,11 +154,12 @@ function exportDataFromSpreadsheet() {
         let course = courses[courseCode];
         let results = course.results;
         let result = results[results.length - 1];
-        if (date === result.date) {
+        if (resultId === result.resultId) {
           result[grade] = count;
           course.results[course.results.length - 1] = result;
         } else {
           let result = new Result();
+          result.resultId = resultId;
           result.date = date;
           result.type = type;
           result[grade] = count;
