@@ -14,9 +14,11 @@ This app also provides [a public REST API](API.md).
 - [MongoDB](https://mongodb.com)
 
 ## Setup
+
 *Note that these instructions are specific for ftek.se.*
 
 To install run these commands:
+
 ```bash
 cd /srv/websites/statistics
 git clone https://github.com/Fysikteknologsektionen/chalmers-course-stats/ .
@@ -26,6 +28,7 @@ chmod +x statistics/update.sh
 ```
 
 To have the app always running you will now create two systemd services:
+
 - `mongod.service` - database
 - `node-course-statistics.service` - node.js
 
@@ -37,7 +40,6 @@ _To get continuous database updates you need to setup a cron job.
 Here is an example that will run `update.sh` every second day.:_ 
 
 _`0 0 1-31/2 * * /srv/websites/statistics/statistics/update.sh /srv/websites/statistics/statistics >/dev/null 2>&1`_
-
 
 # Software updates
 
