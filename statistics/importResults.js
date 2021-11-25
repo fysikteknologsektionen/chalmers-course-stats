@@ -29,7 +29,7 @@ async function main() {
   //Loop through all the courses in the datasheet one by one.
   for(key in courses) {
     let co = courses[key];
-    let datesInDb = [];
+    let resultsInDb = [];
     let updatedResults = [];
     //Try to find that course in the database by its course code.
     let dbCourse = await Course.findOne({courseCode: co.courseCode}, {results: 1});
@@ -37,7 +37,8 @@ async function main() {
     if(dbCourse != null) {
       for(let i in dbCourse.results) {
         //Check what exam ids are already in the databse (no need to add them again).
-        datesInDb.push(dbCourse.results[i].resultId);
+        
+        resultsInDb.push(dbCourse.results[i].resultId);
       }
       //Add all the existing results to a array of updated results. Any new results will be appended to this one.
       updatedResults = dbCourse.results;
@@ -53,7 +54,8 @@ async function main() {
     let newEntry = false;
 
     for(let i in co.results) { //For each result of a course in spreadsheet
-      if(datesInDb.indexOf(co.results[i].resultId) == -1) { //If it does not exist in the database already
+      //TODO: ordentlig check med datum
+      if(resultsInDb.indexOf(co.results[i].resultId) == -1) { //If it does not exist in the database already
         console.log("NEW ENTRY: " + co.results[i].resultId);
         results.push(co.results[i]); //Add it to the array of results being added
 
