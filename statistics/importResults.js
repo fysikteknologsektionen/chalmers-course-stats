@@ -124,7 +124,7 @@ function exportDataFromSpreadsheet() {
   let courses = {};
   console.log('Reading spreadsheet...');
   const worksheet = xlsx.parse(`${__dirname}/${filename}`);
-  //Look at the 2nd onwards datasheet only, probably old format will get changed.
+  
   worksheet.slice(0).forEach((ws) => {
     const data = ws.data.slice(1);
     //For each row in the data from the 2nd onwards
