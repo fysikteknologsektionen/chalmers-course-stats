@@ -36,7 +36,7 @@ async function main() {
 
     if(dbCourse != null) {
       for(let i in dbCourse.results) {
-        //Check what exam ids are already in the databse (no need to add them again).
+        //Check what exams are already in the databse (no need to add them again).
         
         resultsInDb.push(dbCourse.results[i].date);
       }
@@ -54,7 +54,6 @@ async function main() {
     let newEntry = false;
 
     for(let i in co.results) { //For each result of a course in spreadsheet
-      //TODO: ordentlig check med datum
       if(resultsInDb.indexOf(co.results[i].date) == -1) { //If it does not exist in the database already
         console.log("NEW ENTRY: " + co.results[i].date);
         results.push(co.results[i]); //Add it to the array of results being added
