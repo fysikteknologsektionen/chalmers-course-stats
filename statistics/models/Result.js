@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const schema = new mongoose.Schema({
   date: String,
   type: String,
-  resultId: { type: String},
+  resultId: { type: String, default: "Unknown"},
   U: { type: Number, default: 0 },
   3: { type: Number, default: 0 },
   G: { type: Number, default: 0 },
