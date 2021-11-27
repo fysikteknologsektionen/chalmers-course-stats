@@ -24,7 +24,6 @@ cd /srv/websites/statistics
 git clone https://github.com/Fysikteknologsektionen/chalmers-course-stats/ .
 npm install
 npm run build
-chmod +x statistics/update.sh
 ```
 
 To have the app always running you will now create two systemd services:
@@ -34,12 +33,7 @@ To have the app always running you will now create two systemd services:
 
 This can be done by using [this configuration for mongod](https://gist.github.com/jwilm/5842956) and following [this guide for node](https://www.axllent.org/docs/view/nodejs-service-with-systemd/). Some tweaks might be neccesary to get it working for this specific app. For example the node service should start `node server.js` in our case.
 
-**NOTE** The data is currently obtained by manual email as Chalmers does not publish it as a online document anymore. The paragraph below is the old way of updating the data which might be relevant again in the future. 
-
-_To get continuous database updates you need to setup a cron job.
-Here is an example that will run `update.sh` every second day.:_ 
-
-_`0 0 1-31/2 * * /srv/websites/statistics/statistics/update.sh /srv/websites/statistics/statistics >/dev/null 2>&1`_
+**NOTE** The data is currently obtained by manual email as Chalmers does not publish it as a online document anymore.
 
 # Software updates
 
@@ -54,9 +48,6 @@ git reset --hard FETCH_HEAD
 chown www-data:www-data -R *
 npm install
 npm run build
-cd statistics
-#chmod +x update.sh     #OLD
-#./update.sh .          #OLD
 sudo /bin/systemctl restart node-course-statistics
 ```
 
@@ -71,11 +62,6 @@ node importResults.js
 ```
 
 Below are the old way of importing things. **You should not need to use them.**
-
-_If the cron job is set up correctly then you don't need to do this._
-
-_However these are the commands for a manual update:_
-
 ```bash
 cd /srv/websites/statistics/statistics/
 mongo --eval "db.dropDatabase();"
@@ -99,7 +85,7 @@ npm install
 ```
 
 To start the server run (in separate terminals)
-- `mongod` (use `mongod --dbpath` to run the database from the same folder)
+- `mongod` (use `mongod --dbpath` to run the database from the same folder instead of on root level)
 - `npm start`
 - `node server.js`
 
