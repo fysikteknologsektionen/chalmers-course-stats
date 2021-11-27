@@ -55,10 +55,14 @@ A [webhook script](https://gist.github.com/gka/4627519) has been setup so deploy
 
 # Database updates
 
-The database is updated manually by running the following commands after placing the relevant excel document of results in the `statistics` folder:
+The database is updated manually by running the following commands after placing the relevant excel document of results in the `statistics/documents` folder and editing `statistics/result_files.json` to match:
 ```bash
-cd /srv/stats/statistics
-node importResults.js
+npm run db
+```
+Optionally you can clear the database of old content first by running
+```bash
+npm run db -- --drop
+npm run db
 ```
 
 Below are the old way of importing things. **You should not need to use them.**
