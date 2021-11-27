@@ -26,11 +26,9 @@ function exportDataFromAllSpreadsheets() {
     for (i in resultsJson) {
         fileJson = resultsJson[i];
 
-        if(!fileJson.exampleFile) {
+        if (!fileJson.exampleFile) {
             courses = exportDataFromSingleSpreadsheet(fileJson.filePath, fileJson.format, courses);
         }
-        
-
     }
     return courses;
 }
@@ -191,6 +189,7 @@ async function main() {
                 { $out: 'courses' },
             ], (err1, result1) => {
                 if (err1 != null) {
+                    console.log("First error: ");
                     console.log(err1);
                 }
                 Course.aggregate([
@@ -203,6 +202,7 @@ async function main() {
                     { $out: 'courses' },
                 ], (err2, result2) => {
                     if (err2 != null) {
+                        console.log("Second error: ");
                         console.log(err2);
                     }
                     console.log('Database updated!');
@@ -210,6 +210,7 @@ async function main() {
                 });
             });
         });
+
     } else {
         console.log("No new results added.")
         process.exit();
