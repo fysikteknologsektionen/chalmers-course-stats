@@ -1,0 +1,23 @@
+[
+    {
+        "filePath": "documents/exampleFormat0.xlsx",
+        "format": 0,
+        "exampleFile": true
+    },
+    {
+        "filePath": "documents/exampleFormat1.xlsx",
+        "format": 1,
+        "exampleFile": true
+    },
+    {
+        "filePath": "documents/Tentastatistik_2010_2018.xlsx",
+        "format": 1,
+        "exampleFile": false
+    },
+    {
+        "filePath": "documents/Tentastatistik_lp1_2122.xlsx",
+        "format": 0,
+        "exampleFile": false
+    }
+
+]

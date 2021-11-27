@@ -157,7 +157,7 @@ class CourseList extends React.Component {
                 {this.renderTableHeaderColumn('programShort', 'Program')}
                 {this.renderTableHeaderColumn('passRate', <abbr title="Pass rate">PR</abbr>)}
                 {this.renderTableHeaderColumn('totalPass', <abbr title="Number of passed results">P</abbr>)}
-                {this.renderTableHeaderColumn('totalFail', <abbr title="Numer of failed results">F</abbr>)}
+                {this.renderTableHeaderColumn('U', <abbr title="Numer of failed results">U</abbr>)}
                 {this.renderTableHeaderColumn('averageGrade', <abbr title="Average grade (3-5)">AG</abbr>)}
               </tr>
             </thead>
@@ -169,7 +169,7 @@ class CourseList extends React.Component {
                   <td><abbr title={e.programLong}>{e.programShort}</abbr></td>
                   <td>{Math.round(e.passRate * 1000) / 10}</td>
                   <td>{e.totalPass}</td>
-                  <td>{e.totalFail}</td>
+                  <td>{e.U}</td>
                   <td>{Math.round(e.averageGrade * 10) / 10}</td>
                 </tr>
               ))}

@@ -1,7 +1,10 @@
 node_modules
 build
-results.xlsx*
-temp.xlsx
+
+#Exclude all Excel files apart from the example files provided
+*.xlsx
+!example*.xlsx
+
 *.log
 db/
 .vscode
