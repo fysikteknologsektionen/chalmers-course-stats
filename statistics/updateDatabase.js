@@ -2,9 +2,9 @@
 This file updates the database with all the results of the documents listen in result_files.json.
 This script will work for both updating a existing database and for creating a new one.
 */
-
+require('dotenv').config({ path: `${__dirname}/../.env` });
 var fs = require('fs');
-var resultsJson = JSON.parse(fs.readFileSync('result_files.json', 'utf8'));
+var resultsJson = JSON.parse(fs.readFileSync(`${__dirname}/result_files.json`, 'utf8'));
 
 const mongoose = require('mongoose');
 const xlsx = require('node-xlsx');
@@ -94,11 +94,20 @@ async function main() {
     mongoose.set('useCreateIndex', true);
     mongoose.set('useNewUrlParser', true);
     console.log("Connecting to the database...");
-    await mongoose.connect('mongodb://localhost/stats', {
+    const dbURI = `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_DATABASE}`;
+    await mongoose.connect(dbURI, {
+        user: process.env.DB_USER,
+        pass: process.env.DB_PASSWORD,
         useNewUrlParser: true,
         useUnifiedTopology: true
     });
     console.log("Connected to database!");
+
+    if (process.argv.includes('--drop')) {
+        await mongoose.connection.db.dropDatabase();
+        console.log("Dropped the database.");
+        process.exit();
+    }
 
     let courses = exportDataFromAllSpreadsheets();
     let results = [];
