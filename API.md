@@ -2,7 +2,7 @@
 The app provides a REST API for accessing the results.
 
 ## GET courses
-https://ftek.se/stats/courses/
+https://stats.ftek.se/courses/
 
 Parameters:
 
@@ -86,11 +86,11 @@ Response:
 
 
 ## GET course info
-https://ftek.se/stats/courses/{course-code}
+https://stats.ftek.se/courses/{course-code}
 
 Example:
 
-https://ftek.se/stats/courses/TMA970
+https://stats.ftek.se/courses/TMA970
 
 Response:
 ```json
@@ -99,12 +99,12 @@ Response:
     "4": 317,
     "5": 127,
     "totalPass": 1235,
-    "totalFail": 1194,
     "averageGrade": 3.4623481781376517,
     "U": 1194,
     "G": 0,
     "TG": 0,
     "_id": "5c30e4893de27e65c607455c",
+    "updatedAt": "2021-11-26T09:10:06.044Z",
     "courseCode": "TMA970",
     "courseName": "Inledande matematisk analys",
     "programShort": "TKTFY",
@@ -116,11 +116,11 @@ Response:
 ```
 
 ## GET results (of a course)
-https://ftek.se/stats/results/{course-code}
+https://stats.ftek.se/results/{course-code}
 
 Example:
 
-https://ftek.se/stats/results/FFM521
+https://stats.ftek.se/results/FFM521
 
 
 Response (partial):
@@ -130,11 +130,13 @@ Response (partial):
         "3": 23,
         "4": 9,
         "5": 0,
+        "resultId": "Unknown",
         "U": 15,
         "G": 26,
         "TG": 0,
         "VG": 0,
         "_id": "5c30e48c3de27e65c6087396",
+        "updatedAt": "2021-11-26T09:10:00.150Z",
         "date": "2017-08-24",
         "type": "Projekt"
     },
@@ -142,13 +144,25 @@ Response (partial):
         "3": 39,
         "4": 17,
         "5": 7,
+        "resultId": "0196",
         "U": 63,
         "G": 0,
         "TG": 0,
         "VG": 0,
         "_id": "5c30e48c3de27e65c60880b7",
+        "updatedAt": "2021-11-26T09:10:00.455Z",
         "date": "2017-06-02",
         "type": "Tentamen"
     }
 ]
 ```
+
+## GET latest database update
+https://stats.ftek.se/results/
+
+Response:
+```json
+{
+    "updatedAt": "2021-11-26T09:10:13.556Z",
+    "courseCode": "EEN030"
+}
