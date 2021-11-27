@@ -1,3 +1,8 @@
+/*
+This file updates the database with all the results of the documents listen in result_files.json.
+This script will work for both updating a existing database and for creating a new one.
+*/
+
 var fs = require('fs');
 var resultsJson = JSON.parse(fs.readFileSync('result_files.json', 'utf8'));
 
