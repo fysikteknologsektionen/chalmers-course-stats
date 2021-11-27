@@ -103,6 +103,12 @@ async function main() {
     });
     console.log("Connected to database!");
 
+    if (process.argv.includes('--drop')) {
+        await mongoose.connection.db.dropDatabase();
+        console.log("Dropped the database.");
+        process.exit();
+    }
+
     let courses = exportDataFromAllSpreadsheets();
     let results = [];
 
