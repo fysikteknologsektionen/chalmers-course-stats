@@ -3,5 +3,4 @@ build
 *.xlsx
 *.log
 db/
-data/
 .vscode
