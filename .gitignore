@@ -1,6 +1,8 @@
 node_modules
 build
+
 *.xlsx
+!example*.xlsx
 *.log
 db/
 .vscode
