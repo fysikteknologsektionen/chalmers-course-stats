@@ -7,9 +7,7 @@ class Notice extends React.Component {
     return (
       <div className={'notification is-success' + (Notice.hidden ? ' is-hidden' : '')}>
         <button className="delete" onClick={this.hideNotice}></button>
-        <p>We're back up and running! The latest exams should be available now.
-          However, there are still some results missing from 2019, 2020 and early 2021 which are being looked into if they can be obtained.
-        </p>
+        <p>We're back up and running! All exams should be available now!</p>
       </div>
     );
   }
