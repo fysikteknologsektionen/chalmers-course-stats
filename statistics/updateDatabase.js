@@ -47,6 +47,14 @@ function exportDataFromSingleSpreadsheet(path, format, courses) {
             //Course Code, Course Name, ex: TKTFY, ex: Teknisk Fysik, Examination ID number, Type of examination, Course examination moment HP, date, grade, amount, fraction of total 
             let courseCode, courseName, programShort, programLong, resultId, type, points, date, grade, count, fraction;
             [courseCode, courseName, programShort, programLong, resultId, type, points, date, grade, count, fraction] = r;
+
+            if(courseCode === undefined) {
+                return;
+            }
+
+            if(courseCode.length != 6) {
+                return;
+            }
             if (date.toString().length === 5) { // Excel short date format
                 date = (new Date((date - (25567 + 2)) * 24 * 60 * 60 * 1000)).toISOString().substr(0, 10);
             } else {
@@ -96,8 +104,6 @@ async function main() {
     console.log("Connecting to the database...");
     const dbURI = `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_DATABASE}`;
     await mongoose.connect(dbURI, {
-        user: process.env.DB_USER,
-        pass: process.env.DB_PASSWORD,
         useNewUrlParser: true,
         useUnifiedTopology: true
     });
@@ -111,6 +117,7 @@ async function main() {
 
     let courses = exportDataFromAllSpreadsheets();
     let results = [];
+    let verbose = process.argv.includes('--verbose')
 
     //Loop through all the courses in the datasheet one by one.
     for (key in courses) {
@@ -133,15 +140,20 @@ async function main() {
             await Course.create(co);
         }
 
-
-        console.log("Checking course: " + co.courseCode);
-        //console.log(resultAlreadyInDb);
+        
+        if(verbose){
+            console.log("Checking course: " + co.courseCode);
+            //console.log(resultAlreadyInDb);
+        }
 
         let newEntry = false;
+        
 
         for (let i in co.results) { //For each result of a course in spreadsheet
             if (resultsInDb.indexOf(co.results[i].date) == -1) { //If it does not exist in the database already
-                console.log("NEW ENTRY: " + co.results[i].date);
+                if(verbose) {
+                    console.log("NEW ENTRY: " + co.results[i].date);
+                }
                 results.push(co.results[i]); //Add it to the array of results being added
 
                 updatedResults.push(co.results[i]); //Add it to the array of updated results.
@@ -153,7 +165,9 @@ async function main() {
         if (newEntry) {//If there is at least one new result of any given course.
             //Update the results of a course entry in the database.
             await Course.updateOne({ courseCode: co.courseCode }, { $set: { results: updatedResults, updatedAt: Date.now() } });
-            console.log("Course " + co.courseCode + " updated.");
+            if(verbose) {
+                console.log("Course " + co.courseCode + " updated.");
+            }
 
         }
     }
