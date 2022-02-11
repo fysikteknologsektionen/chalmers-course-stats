@@ -104,6 +104,8 @@ async function main() {
     console.log("Connecting to the database...");
     const dbURI = `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_DATABASE}`;
     await mongoose.connect(dbURI, {
+        user: process.env.DB_USER,
+        pass: process.env.DB_PASSWORD,
         useNewUrlParser: true,
         useUnifiedTopology: true
     });
