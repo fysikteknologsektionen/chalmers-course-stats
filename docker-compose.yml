@@ -16,7 +16,7 @@ services:
       - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     networks:
       - back-tier
-  app:
+  chalmers-course-stats:
     build:
       context: .
       target: prod
@@ -39,3 +39,5 @@ services:
 networks:
   back-tier:
   front-tier:
+    external: ${STATS_NET_EXTERN:-false}
+    name: ${STATS_NET_NAME:-front-tier}

@@ -3,8 +3,11 @@ build
 
 #Exclude all Excel files apart from the example files provided
 *.xlsx
-!example*.xlsx
 
 *.log
 db/
 .vscode
+
+Dockerfile
+docker-compose.yml
+.devcontainer
