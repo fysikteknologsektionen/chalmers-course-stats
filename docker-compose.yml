@@ -15,7 +15,7 @@ services:
       - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     networks:
       - back-tier
-  app:
+  chalmers-course-stats:
     image: node:16.15-bullseye
     restart: unless-stopped
     working_dir: /usr/src/app
@@ -50,7 +50,7 @@ services:
       - .:/usr/src/repo:ro
       - ${STATS_DOCUMENTS}:/usr/src/repo/statistics/documents:ro
     networks:
-      - public
+      - front-tier
       - back-tier
 
 volumes:
@@ -58,6 +58,6 @@ volumes:
 
 networks:
   back-tier:
-  public:
-    external: true
-    name: ${STATS_NETWORK}
+  front-tier:
+    external: ${STATS_NET_EXTERN:-false}
+    name: ${STATS_NET_NAME:-front-tier}
