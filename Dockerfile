@@ -17,8 +17,9 @@ FROM base as prod
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait /wait
 RUN chmod +x /wait
 
-RUN npm ci --only=production
-
+COPY . .
 COPY --from=build /usr/src/app/build build
+
+RUN npm ci --only=production
 
 CMD /wait && npm run db && node server.js
