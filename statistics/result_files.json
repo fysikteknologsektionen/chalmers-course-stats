@@ -43,5 +43,10 @@
         "filePath": "documents/Tentastatistik_lp1_lp4_212223.xlsx",
         "format": 0,
         "exampleFile": false
+    },
+    {
+        "filePath": "documents/Tentastatistik_lp2_2223.xlsx",
+        "format": 0,
+        "exampleFile": false
     }
 ]
