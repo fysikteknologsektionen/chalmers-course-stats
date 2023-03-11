@@ -1,0 +1,13 @@
+node_modules
+build
+
+#Exclude all Excel files apart from the example files provided
+*.xlsx
+
+*.log
+db/
+.vscode
+
+Dockerfile
+docker-compose.yml
+.devcontainer

@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  db:
+    image: mongo:4.4.14-rc0
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: stats
+    volumes:
+      # To create a database, we mount a small mongo script
+      # See "Initializing a fresh instance" at https://hub.docker.com/_/mongo
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - back-tier
+  chalmers-course-stats:
+    build:
+      context: .
+      target: prod
+    restart: unless-stopped
+    environment:
+      APP_HOST: ${APP_HOST:-0.0.0.0}
+      APP_PORT: ${APP_PORT:-3000}
+      DB_HOST: db
+      DB_PORT: 27017
+      DB_DATABASE: stats
+      DB_USER: stats
+      DB_PASSWORD: password
+      WAIT_HOSTS: db:27017
+    volumes:
+      - ${STATS_DOCUMENTS:-./statistics/documents}:/usr/src/app/statistics/documents:ro
+    networks:
+      - front-tier
+      - back-tier
+
+networks:
+  back-tier:
+  front-tier:
+    external: ${STATS_NET_EXTERN:-false}
+    name: ${STATS_NET_NAME:-front-tier}
