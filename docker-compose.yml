@@ -1,0 +1,63 @@
+version: "3.9"
+
+services:
+  db:
+    image: mongo:4.4.14-rc0
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: stats
+    volumes:
+      - db-data:/data/db
+      # To create a database, we mount a small mongo script
+      # See "Initializing a fresh instance" at https://hub.docker.com/_/mongo
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - back-tier
+  chalmers-course-stats:
+    image: node:16.15-bullseye
+    restart: unless-stopped
+    working_dir: /usr/src/app
+    command:
+      - /bin/sh
+      - -c
+      - |
+        # Install docker-compose wait
+        curl -L https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait -o /wait
+        chmod +x /wait
+        # Copy the repository files from the bind mount to a local folder inside the container
+        # This leavs the files outside the container untouched and increases io performance
+        cp -r /usr/src/repo/. .
+        # Create a production build
+        npm ci
+        npm run build
+        # Wait for mongo to be ready
+        WAIT_HOSTS="$${DB_HOST}:$${DB_PORT}" /wait
+        # Populate the database
+        npm run db
+        # Start the server
+        node server.js
+    environment:
+      APP_HOST: '0.0.0.0'
+      APP_PORT: ${STATS_PORT}
+      DB_HOST: db
+      DB_PORT: 27017
+      DB_DATABASE: stats
+      DB_USER: stats
+      DB_PASSWORD: password
+    volumes:
+      - .:/usr/src/repo:ro
+      - ${STATS_DOCUMENTS}:/usr/src/repo/statistics/documents:ro
+    networks:
+      - front-tier
+      - back-tier
+
+volumes:
+  db-data:
+
+networks:
+  back-tier:
+  front-tier:
+    external: ${STATS_NET_EXTERN:-false}
+    name: ${STATS_NET_NAME:-front-tier}
