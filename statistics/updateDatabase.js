@@ -78,7 +78,7 @@ function exportDataFromSingleSpreadsheet(path, format, courses) {
                 let course = courses[courseCode];
                 let results = course.results;
                 let result = results[results.length - 1];
-                if (date === result.date) {
+                if (date === result.date && type === result.type) {
                     result[grade] = count;
                     course.results[course.results.length - 1] = result;
                 } else {
