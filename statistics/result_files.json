@@ -98,5 +98,10 @@
         "filePath": "documents/Tentastatistik_lp3_2425.xlsx",
         "format": 0,
         "exampleFile": false
-    }
+    },
+    {
+        "filePath": "documents/Tentastatistik_lp4_2425.xlsx",
+        "format": 0,
+        "exampleFile": false
+    },
 ]
