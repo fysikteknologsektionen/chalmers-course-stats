@@ -6,33 +6,33 @@ exports.resultList = ((req, res) => {
     { $unwind: '$results' },
     { $replaceRoot: { newRoot: '$results' } },
     { $sort: { date: -1 } },
-  ], (err, result) => {
-    if (err) {
-      res.json(err);
-    } else {
+  ])
+    .then((result) => {
       res.json(result);
-    }
-  });
+    })
+    .catch((err) => {
+      res.json(err);
+    })
 });
 
 exports.latestUpdate = ((req, res) => {
-  Course.findOne({}, {_id: 0, courseCode: 1, updatedAt: 1}).sort({updatedAt: -1}).exec((err, result) => {
-    if (err) {
-      res.json(err);
-    }else {
+  Course.findOne({}, {_id: 0, courseCode: 1, updatedAt: 1}).sort({updatedAt: -1}).exec()
+    .then((result) => {
       res.json(result);
-    }
-  });
+    })
+    .catch((err) => {
+      res.json(err);
+    })
 });
 
 exports.courseDetail = ((req, res) => {
-  Course.findOne({ courseCode: req.params.courseCode.toUpperCase() }, {results: 0}).exec((err, result) => {
-    if (err) {
-      res.json(err);
-    } else {
+  Course.findOne({ courseCode: req.params.courseCode.toUpperCase() }, {results: 0}).exec()
+    .then((result) => {
       res.json(result);
-    }
-  });
+    })
+    .catch((err) => {
+      res.json(err);
+    })
 });
 
 exports.courseList = ((req, res) => {
@@ -81,7 +81,11 @@ exports.courseList = ((req, res) => {
         { $limit: items }],
       'metadata': [ {$group:  {_id: null, count: { $sum: 1 } } }, {$project: {_id: 0} } ],
     } },
-  ], (err, result) => {
-    res.json(result[0]);
-  });
+  ])
+    .then((result) => {
+      res.json(result[0]);
+    })
+    .catch((err) => {
+      res.json(err);
+    })
 });
