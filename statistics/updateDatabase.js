@@ -99,15 +99,11 @@ function exportDataFromSingleSpreadsheet(path, format, courses) {
 
 //Main Async function
 async function main() {
-    mongoose.set('useCreateIndex', true);
-    mongoose.set('useNewUrlParser', true);
     console.log("Connecting to the database...");
     const dbURI = `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_DATABASE}`;
     await mongoose.connect(dbURI, {
         user: process.env.DB_USER,
         pass: process.env.DB_PASSWORD,
-        useNewUrlParser: true,
-        useUnifiedTopology: true
     });
     console.log("Connected to database!");
 
@@ -176,65 +172,67 @@ async function main() {
 
     if (results.length != 0) {
         //Insert the new results into the database.
-        Result.collection.insertMany(results, (err, r) => {
-            Course.aggregate([
-                {
-                    $addFields: {
-                        U: { $sum: '$results.U' },
-                        G: { $sum: '$results.G' },
-                        TG: { $sum: '$results.TG' },
-                        3: { $sum: '$results.3' },
-                        4: { $sum: '$results.4' },
-                        VG: { $sum: '$results.VG' },
-                        5: { $sum: '$results.5' },
-                        totalPass: {
-                            $cond: [{
-                                $eq: [
-                                    { $add: [{ $sum: '$results.3' }, { $sum: '$results.4' }, { $sum: '$results.5' }] }, 0]
-                            }, { $add: [{ $sum: '$results.G' }, { $sum: 'results.TG' }] }, { $add: [{ $sum: '$results.3' }, { $sum: '$results.4' }, { $sum: '$results.5' }, { $sum: '$results.TG' }] }]
-                        },
-                        averageGrade:
-                        {
-                            $cond: [{
-                                $eq: [
-                                    { $add: [{ $sum: '$results.3' }, { $sum: '$results.4' }, { $sum: '$results.5' }] }, 0]
-                            }, 0,
-                            {
-                                $divide: [{
-                                    $sum: [
-                                        { $multiply: [{ $sum: '$results.3' }, 3] },
-                                        { $multiply: [{ $sum: '$results.4' }, 4] },
-                                        { $multiply: [{ $sum: '$results.5' }, 5] },
-                                    ]
-                                }, { $add: [{ $sum: '$results.3' }, { $sum: '$results.4' }, { $sum: '$results.5' }] }]
-                            }]
-                        }
-                    }
-                },
-                { $out: 'courses' },
-            ], (err1, result1) => {
-                if (err1 != null) {
-                    console.log("First error: ");
-                    console.log(err1);
-                }
-                Course.aggregate([
-                    {
-                        $addFields: {
-                            total: { $add: [{ $sum: '$results.U' }, '$totalPass'] },
-                            passRate: { $cond: [{ $eq: ['$totalPass', 0] }, 0, { $divide: ['$totalPass', { $add: ['$totalPass', { $sum: '$results.U' }] }] }] }
-                        }
+        await Result.collection.insertMany(results);
+
+        // Prevent error causing aggregate to fail due
+        // to indexes changing during processing
+        await Course.syncIndexes();
+
+        await Course.aggregate([
+            {
+                $addFields: {
+                    U: { $sum: '$results.U' },
+                    G: { $sum: '$results.G' },
+                    TG: { $sum: '$results.TG' },
+                    3: { $sum: '$results.3' },
+                    4: { $sum: '$results.4' },
+                    VG: { $sum: '$results.VG' },
+                    5: { $sum: '$results.5' },
+                    totalPass: {
+                        $cond: [{
+                            $eq: [
+                                { $add: [{ $sum: '$results.3' }, { $sum: '$results.4' }, { $sum: '$results.5' }] }, 0]
+                        }, { $add: [{ $sum: '$results.G' }, { $sum: 'results.TG' }] }, { $add: [{ $sum: '$results.3' }, { $sum: '$results.4' }, { $sum: '$results.5' }, { $sum: '$results.TG' }] }]
                     },
-                    { $out: 'courses' },
-                ], (err2, result2) => {
-                    if (err2 != null) {
-                        console.log("Second error: ");
-                        console.log(err2);
+                    averageGrade:
+                    {
+                        $cond: [{
+                            $eq: [
+                                { $add: [{ $sum: '$results.3' }, { $sum: '$results.4' }, { $sum: '$results.5' }] }, 0]
+                        }, 0,
+                        {
+                            $divide: [{
+                                $sum: [
+                                    { $multiply: [{ $sum: '$results.3' }, 3] },
+                                    { $multiply: [{ $sum: '$results.4' }, 4] },
+                                    { $multiply: [{ $sum: '$results.5' }, 5] },
+                                ]
+                            }, { $add: [{ $sum: '$results.3' }, { $sum: '$results.4' }, { $sum: '$results.5' }] }]
+                        }]
                     }
-                    console.log('Database updated!');
-                    process.exit();
-                });
-            });
+                }
+            },
+            { $out: 'courses' },
+        ]).catch((err) => {
+            console.log("First error: ");
+            console.log(err);
         });
+
+        await Course.aggregate([
+            {
+                $addFields: {
+                    total: { $add: [{ $sum: '$results.U' }, '$totalPass'] },
+                    passRate: { $cond: [{ $eq: ['$totalPass', 0] }, 0, { $divide: ['$totalPass', { $add: ['$totalPass', { $sum: '$results.U' }] }] }] }
+                }
+            },
+            { $out: 'courses' },
+        ]).catch((err) => {
+            console.log("Second error: ");
+            console.log(err);
+        });
+
+        console.log('Database updated!');
+        process.exit();
 
     } else {
         console.log("No new results added.")
