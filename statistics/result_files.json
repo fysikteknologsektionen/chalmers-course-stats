@@ -128,5 +128,10 @@
         "filePath": "documents/Tentastatistik_lp3_omtenta_2526.xlsx",
         "format": 0,
         "exampleFile": false
+    },
+    {
+        "filePath": "documents/Tentastatistik_lp4_2526.xlsx",
+        "format": 0,
+        "exampleFile": false
     }
 ]
