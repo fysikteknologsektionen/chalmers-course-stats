@@ -2,8 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
-mongoose.set('useCreateIndex', true);
-mongoose.set('useNewUrlParser', true);
 require('./statistics/models/Result');
 require('./statistics/models/Course');
 const router = require('./statistics/routes/routes');
@@ -13,8 +11,6 @@ const dbURI = `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${process
 mongoose.connect(dbURI, {
   user: process.env.DB_USER,
   pass: process.env.DB_PASSWORD,
-  useNewUrlParser: true,
-  useUnifiedTopology: true
 });
 mongoose.connection.on('connected', () => {
   console.log('Mongoose connected to database...');
