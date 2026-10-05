@@ -1,6 +1,5 @@
 const express = require('express');
 const courseController = require('../controller/courseController.js');
-// const cache = require('express-redis-cache')();
 
 const router = express.Router();
 
