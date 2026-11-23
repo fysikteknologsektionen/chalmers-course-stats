@@ -77,3 +77,8 @@ footer {
 .recharts-tooltip-item::before {
   content: '\2B24 ';
 }
+
+.recharts-text.recharts-label > tspan {
+  fill: #101010;
+  font-size: 1.5em;
+}
